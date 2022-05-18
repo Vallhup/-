@@ -40,14 +40,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT ps;
 	HDC hdc;
-	static TCHAR str[50] = L"Hello, world!";
+	static TCHAR str[50] = L"Fucking GitHub";
 
 	switch (iMessage) {
 
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 
-		TextOut(hdc,0,0,str,lstrlen(str));
+		TextOut(hdc, 0, 0, str, lstrlen(str));
 
 		EndPaint(hWnd, &ps);
 		break;
