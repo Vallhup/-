@@ -26,7 +26,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 		WndClass.style = CS_HREDRAW | CS_VREDRAW;
 		RegisterClass(&WndClass);
 	}
-	hWnd = CreateWindow(lpszClass, lpszClass, WS_OVERLAPPEDWINDOW, 0, 0, 1024, 768, NULL, (HMENU)NULL, hInstance, NULL);		//--- 윈도우 크기 변경 가능
+	hWnd = CreateWindow(lpszClass, lpszClass, WS_OVERLAPPEDWINDOW, 0, 0, 1000, 700, NULL, (HMENU)NULL, hInstance, NULL);		//--- 윈도우 크기 변경 가능
 	ShowWindow(hWnd, nCmdShow);
 
 	while (GetMessage(&Message, 0, 0, 0)) {
@@ -38,19 +38,19 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
-	PAINTSTRUCT ps;
 	HDC hdc;
-	static TCHAR str[50] = L"Fucking GitHub";
+	PAINTSTRUCT ps;
 
 	switch (iMessage) {
-
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 
-		TextOut(hdc, 0, 0, str, lstrlen(str));
+
 
 		EndPaint(hWnd, &ps);
+
 		break;
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
