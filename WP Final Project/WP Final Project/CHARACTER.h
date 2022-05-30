@@ -2,7 +2,7 @@
 
 class Character {
 	// 이름
-	std::string name;
+	//std::string name;
 
 	// 능력치
 	int jump;
@@ -18,4 +18,12 @@ class Character {
 
 	// 파워게이지
 	int powerGauge;
+
+	// 점수
+	int score;
+
+public:
+	Character(int jump, int speed, int power, int xPos, int yPos);
+
+	void UI_Print(HDC hdc, int x, int y);
 };

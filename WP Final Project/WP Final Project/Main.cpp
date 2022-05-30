@@ -2,6 +2,10 @@
 #include <tchar.h>
 #include <atlimage.h>
 
+#include "BACKGROUND.h"
+#include "BALL.h"
+#include "CHARACTER.h"
+
 #pragma comment (lib, "msimg32.lib")
 
 HINSTANCE g_hInst;
@@ -39,13 +43,25 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 	return Message.wParam;
 }
 
+CImage BackGround;
+CImage GoalPostR, GoalPostL;
+
+RECT WinSize;
+
+int Timer_M = 1;
+int Timer_S = 0;
+
+TCHAR Timer[10];
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	HDC hdc, memdc;
 	PAINTSTRUCT ps;
 
-	static CImage BackGround;
-	static CImage GoalPostR, GoalPostL;
+	static HBITMAP hBitmap;
+
+	Character P1 = { 0, 0, 0, 0, 0 };
+	Character P2 = { 0, 0, 0, 0, 0 };
 
 	switch (iMessage) {
 	case WM_CREATE:
@@ -53,14 +69,50 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		GoalPostR.Load(_T("GoalPost - R.png"));
 		GoalPostL.Load(_T("GoalPost - L.png"));
 
+		GetClientRect(hWnd, &WinSize);
+
+		Timer_M = 1;
+		Timer_S = 0;
+
+		SetTimer(hWnd, 1, 1000, NULL);
+
+		break;
+
+	case WM_TIMER:
+		switch (LOWORD(wParam)) {
+		case 1:
+			if (Timer_M == 1) {
+				Timer_M = 0;
+				Timer_S = 59;
+			}
+
+			else if(Timer_M == 0) {
+				if (--Timer_S == 0) {
+					KillTimer(hWnd, 1);
+				}
+			}
+	
+			break;
+		}
+
+		InvalidateRect(hWnd, NULL, FALSE);
+
 		break;
 
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 
-		BackGround.BitBlt(hdc, 0, 0, 1000, 740, 0, 0, SRCCOPY);
-		GoalPostR.TransparentBlt(hdc, 930, 570, 62, 109, 0, 0, 62, 109, RGB(255, 255, 255));
-		GoalPostL.TransparentBlt(hdc, 30, 570, 62, 109, 0, 0, 62, 109, RGB(255, 255, 255));
+		hBitmap = CreateCompatibleBitmap(hdc, WinSize.right, WinSize.bottom);
+		memdc = CreateCompatibleDC(hdc);
+
+		(HBITMAP)SelectObject(memdc, hBitmap);
+
+		DrawBG(memdc);
+
+		P1.UI_Print(memdc, WinSize.right / 4 + 60, 140);
+		P2.UI_Print(memdc, WinSize.right / 4 * 3 - 60, 140);
+
+		BitBlt(hdc, 0, 0, 1000, 800, memdc, 0, 0, SRCCOPY);
 
 		EndPaint(hWnd, &ps);
 
