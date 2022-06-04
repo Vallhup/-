@@ -53,6 +53,8 @@ int Timer_S = 0;
 
 TCHAR Timer[10];
 
+Character* P1;
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	HDC hdc, memdc;
@@ -60,14 +62,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 	static HBITMAP hBitmap;
 
-	Character P1 = { 0, 0, 0, 0, 0 };
-	Character P2 = { 0, 0, 0, 0, 0 };
-
 	switch (iMessage) {
 	case WM_CREATE:
 		BackGround.Load(_T("BackGround.png"));
 		GoalPostR.Load(_T("GoalPost - R.png"));
 		GoalPostL.Load(_T("GoalPost - L.png"));
+
+		P1 = new Korea(1);
 
 		GetClientRect(hWnd, &WinSize);
 
@@ -75,6 +76,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		Timer_S = 0;
 
 		SetTimer(hWnd, 1, 1000, NULL);
+
+		break;
+
+	case WM_KEYDOWN:
+		switch (wParam) {
+		case 'a': 
+		case 'A': // 1p аб
+			P1->Move(1);
+			break;
+			
+		case 'd': 
+		case 'D': // 1p ©Л
+			P1->Move(2);
+			break;
+		}
+
+		InvalidateRect(hWnd, NULL, FALSE);
 
 		break;
 
@@ -109,8 +127,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		DrawBG(memdc);
 
-		P1.UI_Print(memdc, WinSize.right / 4 + 60, 140);
-		P2.UI_Print(memdc, WinSize.right / 4 * 3 - 60, 140);
+		P1->UI_Print(memdc, 1);
+		P1->UI_Print(memdc, 2);
+
+		P1->Draw(memdc, 1);
 
 		BitBlt(hdc, 0, 0, 1000, 800, memdc, 0, 0, SRCCOPY);
 
