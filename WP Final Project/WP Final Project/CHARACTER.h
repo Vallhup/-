@@ -12,8 +12,8 @@ protected:
 	int powerGauge = 0;
 
 	// ´É·ÂÄ¡
-	int jump;
-	int speed;
+	int jump;  // 5 ~ 6
+	int speed; // 8 ~ 10
 	int power;
 
 public:
@@ -22,11 +22,12 @@ public:
 	virtual void UI_Print(HDC hdc, int playerNum) const = 0;
 	virtual void Draw(HDC hdc, int playerNum) const = 0;
 	virtual void Move(int dir) = 0;
+	virtual void Jump(int dir) = 0;
 };
 
 class Korea : public Character
 {
-	CImage Head;
+	CImage Head[2];
 	CImage Body[3];
 
 	// ±ê¹ß
@@ -44,4 +45,5 @@ public:
 	virtual void UI_Print(HDC hdc, int playerNum) const override;
 	virtual void Draw(HDC hdc, int playerNum) const override;
 	virtual void Move(int dir) override;
+	virtual void Jump(int dir) override;
 };

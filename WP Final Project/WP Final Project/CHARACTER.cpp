@@ -12,14 +12,16 @@ Character::Character()
 	xPos = 0;
 	yPos = 0;
 	powerGauge = 0;
-	jump = 10;
-	speed = 10;
+	jump = 6;
+	speed = 8;
 	power = 10;
 }
 
 Korea::Korea(int playerNum) : Character()
 {
-	Head.Load(_T("sprite\\korea.png"));
+	Head[0].Load(_T("sprite\\korea_L.png"));
+	Head[1].Load(_T("sprite\\korea_R.png"));
+
 	Body[0].Load(_T("sprite\\body.png"));
 
 	flag.Load(_T("sprite\\flag_korea.png"));
@@ -81,12 +83,21 @@ void Korea::Draw(HDC hdc, int playerNum) const
 			Body[0].TransparentBlt(hdc, xPos, yPos, CHAR_SIZE, CHAR_SIZE, RGB(255, 255, 255));
 		}
 
-		Head.TransparentBlt(hdc, xPos, yPos, CHAR_SIZE, CHAR_SIZE, RGB(255, 255, 255));
+		Head[playerNum-1].TransparentBlt(hdc, xPos, yPos - 7, CHAR_SIZE, CHAR_SIZE, RGB(255, 0, 0));
 
 		break;
 
 	case 2:
+		if (move) {
+		}
 
+		else {
+			Body[0].TransparentBlt(hdc, xPos, yPos, CHAR_SIZE, CHAR_SIZE, RGB(255, 255, 255));
+		}
+
+		Head[playerNum - 1].TransparentBlt(hdc, xPos, yPos - 7, CHAR_SIZE, CHAR_SIZE, RGB(255, 0, 0));
+
+		
 		break;
 	}
 }
@@ -95,11 +106,32 @@ void Korea::Move(int dir)
 {
 	switch (dir) {
 	case 1: // аб
-		xPos -= 10;
+		xPos -= 8;
+
+		if (xPos <= 75) {
+			xPos = 75;
+		}
+
 		break;
 
 	case 2: // ©Л
 		xPos += 10;
+		
+		if (xPos >= 900) {
+			xPos = 900;
+		}
+
 		break;
+	}
+}
+
+void Korea::Jump(int dir)
+{
+	if (dir) {
+		yPos -= jump;
+	}
+
+	else {
+		yPos += jump;
 	}
 }
