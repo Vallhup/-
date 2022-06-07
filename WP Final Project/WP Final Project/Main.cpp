@@ -58,6 +58,8 @@ TCHAR Timer[10];
 Character* P1;
 Character* P2;
 
+Ball ball;
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	HDC hdc, memdc;
@@ -198,6 +200,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		P1->Draw(memdc, 1);
 		P2->Draw(memdc, 2);
 		
+		ball.Draw(memdc);
 
 		BitBlt(hdc, 0, 0, 1000, 800, memdc, 0, 0, SRCCOPY);
 

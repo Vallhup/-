@@ -32,7 +32,7 @@ Korea::Korea(int playerNum) : Character()
 		break;
 
 	case 2:
-		xPos = 500;
+		xPos = 875;
 		break;
 	}
 

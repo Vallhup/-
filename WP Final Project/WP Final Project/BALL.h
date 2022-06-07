@@ -10,4 +10,11 @@ class Ball {
 
 	// 공 스킨
 	CImage ballSkin[3];
+
+	// 랜덤 값
+	int SkinRnd;
+public:
+	Ball();
+
+	void Draw(HDC hdc);
 };
