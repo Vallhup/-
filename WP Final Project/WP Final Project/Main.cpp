@@ -5,6 +5,16 @@
 #include "BACKGROUND.h"
 #include "BALL.h"
 #include "CHARACTER.h"
+#include "Alien.h"
+#include "Asura.h"
+#include "Brazil.h"
+#include "Korea.h"
+#include "Cameroon.h"
+#include "Canada.h"
+#include "Egypt.h"
+#include "Israel.h"
+#include "Italy.h"
+#include "Poland.h"
 
 #pragma comment (lib, "msimg32.lib")
 
@@ -77,8 +87,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		GoalPostR.Load(_T("GoalPost - R.png"));
 		GoalPostL.Load(_T("GoalPost - L.png"));
 
-		P1 = new Korea(1);
-		P2 = new Korea(2);
+		P1 = new Asura(1);
+		P2 = new Asura(2);
 
 		GetClientRect(hWnd, &WinSize);
 
