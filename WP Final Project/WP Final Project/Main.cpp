@@ -5,6 +5,16 @@
 #include "BACKGROUND.h"
 #include "BALL.h"
 #include "CHARACTER.h"
+#include "Alien.h"
+#include "Asura.h"
+#include "Brazil.h"
+#include "Korea.h"
+#include "Cameroon.h"
+#include "Canada.h"
+#include "Egypt.h"
+#include "Israel.h"
+#include "Italy.h"
+#include "Poland.h"
 
 #pragma comment (lib, "msimg32.lib")
 
@@ -12,6 +22,8 @@ HINSTANCE g_hInst;
 TCHAR lpszClass[] = TEXT("WP Final Project");
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
+
+void LOOP(HWND, BOOL KB[]);
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdParam, int nCmdShow)
 {
@@ -54,6 +66,9 @@ int Timer_S = 0;
 TCHAR Timer[10];
 
 Character* P1;
+Character* P2;
+
+Ball ball;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
@@ -62,18 +77,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 	static HBITMAP hBitmap;
 
+	static BOOL KeyBuffer[256] = {FALSE};
+
+	static int JmpCnt1, JmpCnt2;
+
 	switch (iMessage) {
 	case WM_CREATE:
 		BackGround.Load(_T("BackGround.png"));
 		GoalPostR.Load(_T("GoalPost - R.png"));
 		GoalPostL.Load(_T("GoalPost - L.png"));
 
-		P1 = new Korea(1);
+		P1 = new Asura(1);
+		P2 = new Asura(2);
 
 		GetClientRect(hWnd, &WinSize);
 
 		Timer_M = 1;
 		Timer_S = 0;
+
+		JmpCnt1 = JmpCnt2 = 0;
 
 		SetTimer(hWnd, 1, 1000, NULL);
 
@@ -83,17 +105,38 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		switch (wParam) {
 		case 'a': 
 		case 'A': // 1p 谅
-			P1->Move(1);
-			break;
-			
 		case 'd': 
 		case 'D': // 1p 快
-			P1->Move(2);
+		case 'w':
+		case 'W':
+		case VK_LEFT: // 2p 谅
+		case VK_RIGHT: // 2p 快
+		case VK_UP:
+			KeyBuffer[wParam] = TRUE;
 			break;
 		}
 
 		InvalidateRect(hWnd, NULL, FALSE);
 
+		break;
+
+	case WM_KEYUP:
+		switch (wParam)
+		{
+		case 'a':
+		case 'A': // 1p 谅
+		case 'd':
+		case 'D': // 1p 快
+		case 'w':
+		case 'W':
+		case VK_LEFT: // 2p 谅
+		case VK_RIGHT: // 2p 快
+		case VK_UP:
+			KeyBuffer[wParam] = FALSE;
+			break;
+
+		}
+		
 		break;
 
 	case WM_TIMER:
@@ -111,6 +154,38 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			}
 	
 			break;
+
+		case 2:
+			if (JmpCnt1 <= 8) {
+				P1->Jump(1);
+			}
+
+			else {
+				P1->Jump(0);
+			}
+
+			if (JmpCnt1++ == 17) {
+				KillTimer(hWnd, 2);
+				JmpCnt1 = 0;
+			}
+
+			break;
+
+		case 3:
+			if (JmpCnt2 <= 8) {
+				P2->Jump(1);
+			}
+
+			else {
+				P2->Jump(0);
+			}
+
+			if (JmpCnt2++ == 17) {
+				KillTimer(hWnd, 3);
+				JmpCnt2 = 0;
+			}
+
+			break;
 		}
 
 		InvalidateRect(hWnd, NULL, FALSE);
@@ -127,10 +202,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		DrawBG(memdc);
 
+		LOOP(hWnd, KeyBuffer);
+
 		P1->UI_Print(memdc, 1);
-		P1->UI_Print(memdc, 2);
+		P2->UI_Print(memdc, 2);
 
 		P1->Draw(memdc, 1);
+		P2->Draw(memdc, 2);
+		
+		ball.Draw(memdc);
 
 		BitBlt(hdc, 0, 0, 1000, 800, memdc, 0, 0, SRCCOPY);
 
@@ -143,4 +223,36 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	return(DefWindowProc(hWnd, iMessage, wParam, lParam));
+}
+
+void LOOP(HWND hWnd, BOOL KB[]) {
+	if (KB['a'] || KB['A'])
+	{
+		P1->Move(1);
+	}
+
+	if (KB['d'] || KB['D'])
+	{
+		P1->Move(2);
+	}
+
+	if (KB[VK_LEFT])
+	{
+		P2->Move(1);
+	}
+
+	if (KB[VK_RIGHT])
+	{
+		P2->Move(2);
+	}
+	
+	if (KB['w'] || KB['W'])
+	{
+		SetTimer(hWnd, 2, 25, NULL);
+	}
+
+	if (KB[VK_UP])
+	{
+		SetTimer(hWnd, 3, 25, NULL);
+	}
 }

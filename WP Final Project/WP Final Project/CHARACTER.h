@@ -2,6 +2,9 @@
 
 #define CHAR_SIZE 50
 
+#include <atlimage.h>
+#include <Windows.h>
+
 class Character {
 protected:
 	// ÁÂÇ¥
@@ -12,9 +15,9 @@ protected:
 	int powerGauge = 0;
 
 	// ´É·ÂÄ¡
-	int jump;
-	int speed;
-	int power;
+	int jump;  // 5 ~ 6
+	int speed; // 8 ~ 10
+	int power; // 3 ~ 5
 
 public:
 	Character();
@@ -22,26 +25,6 @@ public:
 	virtual void UI_Print(HDC hdc, int playerNum) const = 0;
 	virtual void Draw(HDC hdc, int playerNum) const = 0;
 	virtual void Move(int dir) = 0;
+	virtual void Jump(int dir) = 0;
 };
 
-class Korea : public Character
-{
-	CImage Head;
-	CImage Body[3];
-
-	// ±ê¹ß
-	CImage flag;
-
-	// Á¡¼ö
-	int score = 0;
-
-	//
-	BOOL move;
-
-public:
-	Korea(int playerNum);
-
-	virtual void UI_Print(HDC hdc, int playerNum) const override;
-	virtual void Draw(HDC hdc, int playerNum) const override;
-	virtual void Move(int dir) override;
-};
