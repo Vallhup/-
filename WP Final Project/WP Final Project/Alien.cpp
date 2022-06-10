@@ -1,15 +1,18 @@
 #include "Alien.h"
 
 extern RECT WinSize;
+extern RECT P1Rect;
+extern RECT P2Rect;
+extern BOOL CrashCheck;
 
 Alien::Alien(int playerNum) : Character()
 {
-	Head[0].Load(_T("sprite\\Asura_L.png"));
-	Head[1].Load(_T("sprite\\Asura_R.png"));
+	Head[0].Load(_T("sprite\\Alien_L.png"));
+	Head[1].Load(_T("sprite\\Alien_R.png"));
 
 	Body[0].Load(_T("sprite\\body.png"));
 
-	flag.Load(_T("sprite\\flag_Asura.png"));
+	flag.Load(_T("sprite\\flag_Alien.png"));
 
 	switch (playerNum) {
 	case 1:
@@ -23,9 +26,16 @@ Alien::Alien(int playerNum) : Character()
 
 	yPos = 630;
 
-	jump = 6;
-	speed = 8;
-	power = 10;
+	srand((unsigned int)time(NULL));
+	/*
+	jump = rand() % 10 + 1;
+	speed = rand() % 10 + 1;
+	power = rand() % 10 + 1;
+	*/
+
+	jump = 10;
+	speed =10;
+	power =10;
 
 	move = FALSE;
 }
@@ -91,23 +101,49 @@ void Alien::Draw(HDC hdc, int playerNum) const
 	}
 }
 
-void Alien::Move(int dir)
+void Alien::Move(int dir, int playerNum)
 {
 	switch (dir) {
 	case 1: // аб
-		xPos -= 8;
+		xPos -= speed;
 
 		if (xPos <= 75) {
 			xPos = 75;
 		}
 
+		if (CrashCheck) {
+			switch (playerNum)
+			{
+			case 1:
+				xPos = P2Rect.left - CHAR_SIZE -1;
+				break;
+
+			case 2:
+				break;
+			}
+			CrashCheck = FALSE;
+		}
+
 		break;
 
 	case 2: // ©Л
-		xPos += 10;
+		xPos += speed;
 
 		if (xPos >= 900) {
 			xPos = 900;
+		}
+
+		if (CrashCheck) {
+			switch (playerNum)
+			{
+			case 1:
+				xPos = P2Rect.left - CHAR_SIZE - 1;
+				break;
+
+			case 2:
+				break;
+			}
+			CrashCheck = FALSE;
 		}
 
 		break;

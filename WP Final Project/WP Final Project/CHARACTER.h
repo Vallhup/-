@@ -22,9 +22,11 @@ protected:
 public:
 	Character();
 
+	RECT CharPos();
+
 	virtual void UI_Print(HDC hdc, int playerNum) const = 0;
 	virtual void Draw(HDC hdc, int playerNum) const = 0;
-	virtual void Move(int dir) = 0;
+	virtual void Move(int dir, int playerNum) = 0;
 	virtual void Jump(int dir) = 0;
 };
 

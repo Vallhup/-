@@ -12,6 +12,8 @@ extern int Timer_S;
 
 extern TCHAR Timer[10];
 
+extern int P1Num, P2Num;
+
 void DrawBG(HDC hdc)
 {
 	SIZE size;
@@ -56,4 +58,59 @@ void DrawBG(HDC hdc)
 
 	SelectObject(hdc, oldFont);
 	DeleteObject(hFont);
+}
+
+void DrawSelectBG(HDC hdc)
+{
+	CImage Char[2][10];
+
+	Char[0][0].Load(_T("sprite\\Alien_L.png"));
+	Char[0][1].Load(_T("sprite\\Asura_L.png"));
+	Char[0][2].Load(_T("sprite\\Brazil_L.png"));
+	Char[0][3].Load(_T("sprite\\Cameroon_L.png"));
+	Char[0][4].Load(_T("sprite\\Canada_L.png"));
+	Char[0][5].Load(_T("sprite\\Egypt_L.png"));
+	Char[0][6].Load(_T("sprite\\Israel_L.png"));
+	Char[0][7].Load(_T("sprite\\Italy_L.png"));
+	Char[0][8].Load(_T("sprite\\Korea_L.png"));
+	Char[0][9].Load(_T("sprite\\Poland_L.png"));
+
+	Char[1][0].Load(_T("sprite\\Alien_R.png"));
+	Char[1][1].Load(_T("sprite\\Asura_R.png"));
+	Char[1][2].Load(_T("sprite\\Brazil_R.png"));
+	Char[1][3].Load(_T("sprite\\Cameroon_R.png"));
+	Char[1][4].Load(_T("sprite\\Canada_R.png"));
+	Char[1][5].Load(_T("sprite\\Egypt_R.png"));
+	Char[1][6].Load(_T("sprite\\Israel_R.png"));
+	Char[1][7].Load(_T("sprite\\Italy_R.png"));
+	Char[1][8].Load(_T("sprite\\Korea_R.png"));
+	Char[1][9].Load(_T("sprite\\Poland_R.png"));
+
+	for (int i = 0; i < 2; ++i) {
+		for (int j = 0; j < 5; ++j) {
+			if ((j + (i * 5) == 1) || (j + (i * 5) == 4) || (j + (i * 5) == 5)) {
+				Char[0][j + (i * 5)].TransparentBlt(hdc, 250 + (j * 100), 30 + (i * 120), 100, 100, RGB(0, 255, 0));
+			}
+
+			else {
+				Char[0][j + (i * 5)].TransparentBlt(hdc, 250 + (j * 100), 30 + (i * 120), 100, 100, RGB(255, 0, 0));
+			}
+		}
+	}
+
+	if ((P1Num == 1) || (P1Num == 4) || (P1Num == 5)) {
+		Char[0][P1Num].TransparentBlt(hdc, 50, 400, 300, 300, RGB(0, 255, 0));
+	}
+
+	else {
+		Char[0][P1Num].TransparentBlt(hdc, 50, 400, 300, 300, RGB(255, 0, 0));
+	}
+
+	if ((P2Num == 1) || (P2Num == 4) || (P2Num == 5)) {
+		Char[1][P2Num].TransparentBlt(hdc, WinSize.right - 350, 400, 300, 300, RGB(0, 255, 0));
+	}
+
+	else {
+		Char[1][P2Num].TransparentBlt(hdc, WinSize.right - 350, 400, 300, 300, RGB(255, 0, 0));
+	}
 }

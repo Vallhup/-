@@ -23,9 +23,9 @@ Egypt::Egypt(int playerNum) : Character()
 
 	yPos = 630;
 
-	jump = 6;
+	jump = 5;
 	speed = 8;
-	power = 10;
+	power = 5;
 
 	move = FALSE;
 }
@@ -72,7 +72,7 @@ void Egypt::Draw(HDC hdc, int playerNum) const
 			Body[0].TransparentBlt(hdc, xPos, yPos, CHAR_SIZE, CHAR_SIZE, RGB(255, 255, 255));
 		}
 
-		Head[playerNum - 1].TransparentBlt(hdc, xPos, yPos - 7, CHAR_SIZE, CHAR_SIZE, RGB(255, 0, 0));
+		Head[playerNum - 1].TransparentBlt(hdc, xPos, yPos - 7, CHAR_SIZE, CHAR_SIZE, RGB(0, 255, 0));
 
 		break;
 
@@ -84,18 +84,18 @@ void Egypt::Draw(HDC hdc, int playerNum) const
 			Body[0].TransparentBlt(hdc, xPos, yPos, CHAR_SIZE, CHAR_SIZE, RGB(255, 255, 255));
 		}
 
-		Head[playerNum - 1].TransparentBlt(hdc, xPos, yPos - 7, CHAR_SIZE, CHAR_SIZE, RGB(255, 0, 0));
+		Head[playerNum - 1].TransparentBlt(hdc, xPos, yPos - 7, CHAR_SIZE, CHAR_SIZE, RGB(0, 255, 0));
 
 
 		break;
 	}
 }
 
-void Egypt::Move(int dir)
+void Egypt::Move(int dir, int playerNum)
 {
 	switch (dir) {
 	case 1: // аб
-		xPos -= 8;
+		xPos -= speed;
 
 		if (xPos <= 75) {
 			xPos = 75;
@@ -104,7 +104,7 @@ void Egypt::Move(int dir)
 		break;
 
 	case 2: // ©Л
-		xPos += 10;
+		xPos += speed;
 
 		if (xPos >= 900) {
 			xPos = 900;

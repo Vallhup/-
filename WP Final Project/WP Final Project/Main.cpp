@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <tchar.h>
 #include <atlimage.h>
+#include <math.h>
 
 #include "BACKGROUND.h"
 #include "BALL.h"
@@ -70,25 +71,60 @@ Character* P2;
 
 Ball ball;
 
+BOOL CrashCheck = FALSE;
+
+RECT P1Rect, P2Rect;
+
+int P1Num, P2Num;
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	HDC hdc, memdc;
 	PAINTSTRUCT ps;
 
+	static int temp;
+
+	static int SceneNum = 0;
 	static HBITMAP hBitmap;
+
+	static CImage StartBG;
+	static CImage CharSelectBG;
+	static CImage ResultBG;
 
 	static BOOL KeyBuffer[256] = {FALSE};
 
 	static int JmpCnt1, JmpCnt2;
 
+	RECT CrashSize;
+
+	static RECT ButtonPlay;
+	static RECT ButtonExit;
+
+	static POINT mouse;
+	static TCHAR str[100];
+
+	static RECT CharSelRect[10];
+
 	switch (iMessage) {
 	case WM_CREATE:
+		SceneNum = 1;
+
+		ButtonPlay = { 120, 650, 360, 700 };
+		ButtonExit = { 680, 655, 930, 700 };
+
+		P1Num = P2Num = 0;
+
+		StartBG.Load(_T("StartBG.png"));
+		CharSelectBG.Load(_T("CharSelectBG.png"));
 		BackGround.Load(_T("BackGround.png"));
 		GoalPostR.Load(_T("GoalPost - R.png"));
 		GoalPostL.Load(_T("GoalPost - L.png"));
 
-		P1 = new Asura(1);
-		P2 = new Asura(2);
+		for (int i = 0; i < 2; ++i) {
+			for (int j = 0; j < 5; ++j) {
+				CharSelRect[j + (i * 5)] = { 250 + (j * 100), 30 + (i * 120), 350 + (j * 100), 130 + (i * 120) };
+			}
+		}
 
 		GetClientRect(hWnd, &WinSize);
 
@@ -96,8 +132,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		Timer_S = 0;
 
 		JmpCnt1 = JmpCnt2 = 0;
-
-		SetTimer(hWnd, 1, 1000, NULL);
 
 		break;
 
@@ -192,6 +226,127 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		break;
 
+	case WM_LBUTTONDOWN:
+		mouse.x = LOWORD(lParam);
+		mouse.y = HIWORD(lParam);
+
+		switch (SceneNum) {
+		case 1:
+			if (PtInRect(&ButtonPlay, mouse)) {
+				SceneNum = 2;
+			}
+
+			else if (PtInRect(&ButtonExit, mouse)) {
+				PostQuitMessage(0);
+			}
+
+			break;
+
+		case 2:
+			for (int i = 0; i < 2; ++i) {
+				for (int j = 0; j < 5; ++j) {
+					if (PtInRect(&CharSelRect[j + (i * 5)], mouse)) {
+						P1Num = j + (i * 5);
+					}
+				}
+			}
+
+			switch (P1Num) {
+			case 0:
+				P1 = new Alien(1);
+				break;
+			case 1:
+				P1 = new Asura(1);
+				break;
+			case 2:
+				P1 = new Brazil(1);
+				break;
+			case 3:
+				P1 = new Cameroon(1);
+				break;
+			case 4:
+				P1 = new Canada(1);
+				break;
+			case 5:
+				P1 = new Egypt(1);
+				break;
+			case 6:
+				P1 = new Israel(1);
+				break;
+			case 7:
+				P1 = new Italy(1);
+				break;
+			case 8:
+				P1 = new Korea(1);
+				break;
+			case 9:
+				P1 = new Poland(1);
+				break;
+			}
+
+			if (sqrt(pow(500 - mouse.x, 2) + pow(530 - mouse.y, 2)) <= 110) {
+				SceneNum = 3;
+				SetTimer(hWnd, 1, 1000, NULL);
+			}
+
+			break;
+		}
+
+		InvalidateRect(hWnd, NULL, FALSE);
+
+		break;
+
+	case WM_RBUTTONDOWN:
+		mouse.x = LOWORD(lParam);
+		mouse.y = HIWORD(lParam);
+
+		if (SceneNum == 2) {
+			for (int i = 0; i < 2; ++i) {
+				for (int j = 0; j < 5; ++j) {
+					if (PtInRect(&CharSelRect[j + (i * 5)], mouse)) {
+						P2Num = j + (i * 5);
+					}
+				}
+			}
+		}
+
+		switch (P2Num) {
+		case 0:
+			P2 = new Alien(2);
+			break;
+		case 1:
+			P2 = new Asura(2);
+			break;
+		case 2:
+			P2 = new Brazil(2);
+			break;
+		case 3:
+			P2 = new Cameroon(2);
+			break;
+		case 4:
+			P2 = new Canada(2);
+			break;
+		case 5:
+			P2 = new Egypt(2);
+			break;
+		case 6:
+			P2 = new Israel(2);
+			break;
+		case 7:
+			P2 = new Italy(2);
+			break;
+		case 8:
+			P2 = new Korea(2);
+			break;
+		case 9:
+			P2 = new Poland(2);
+			break;
+		}
+
+		InvalidateRect(hWnd, NULL, FALSE);
+
+		break;
+
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 
@@ -200,17 +355,39 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		(HBITMAP)SelectObject(memdc, hBitmap);
 
-		DrawBG(memdc);
-
-		LOOP(hWnd, KeyBuffer);
-
-		P1->UI_Print(memdc, 1);
-		P2->UI_Print(memdc, 2);
-
-		P1->Draw(memdc, 1);
-		P2->Draw(memdc, 2);
 		
-		ball.Draw(memdc);
+		
+
+		switch (SceneNum) {
+		case 1:
+			StartBG.BitBlt(memdc, 0, 0, 1000, 740, 0, 0, SRCCOPY);
+			break;
+
+		case 2:
+			CharSelectBG.StretchBlt(memdc, WinSize, SRCCOPY);
+			DrawSelectBG(memdc);
+			break;
+
+		case 3:
+			DrawBG(memdc);
+
+			P1->UI_Print(memdc, 1);
+			P2->UI_Print(memdc, 2);
+
+			P1Rect = P1->CharPos();
+			P2Rect = P2->CharPos();
+
+			CrashCheck = IntersectRect(&CrashSize, &P1Rect, &P2Rect);
+
+			ball.Draw(memdc);
+
+			LOOP(hWnd, KeyBuffer);
+
+			P1->Draw(memdc, 1);
+			P2->Draw(memdc, 2);
+	
+			break;
+		}
 
 		BitBlt(hdc, 0, 0, 1000, 800, memdc, 0, 0, SRCCOPY);
 
@@ -226,24 +403,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 }
 
 void LOOP(HWND hWnd, BOOL KB[]) {
-	if (KB['a'] || KB['A'])
-	{
-		P1->Move(1);
-	}
-
-	if (KB['d'] || KB['D'])
-	{
-		P1->Move(2);
-	}
-
 	if (KB[VK_LEFT])
 	{
-		P2->Move(1);
+		P2->Move(1,2);
 	}
 
 	if (KB[VK_RIGHT])
 	{
-		P2->Move(2);
+		P2->Move(2,2);
+	}
+	
+	if (KB['a'] || KB['A'])
+	{
+		P1->Move(1,1);
+	}
+
+	if (KB['d'] || KB['D'])
+	{
+		P1->Move(2,1);
 	}
 	
 	if (KB['w'] || KB['W'])

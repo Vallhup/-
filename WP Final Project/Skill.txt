@@ -1,10 +1,10 @@
-		jump	speed	power
+			 jump	 speed	  power
 
 alien		    1~10 random
 asura		   6	   10	   3
 brazil		   6	   10	   3
 cameroon	   5	   9	   4
-canada	   6	   9	   4
+canada		   6	   9	   4
 egypt		   5	   8	   5
 israel		   5	   9	   4
 italy		   5	   8	   5

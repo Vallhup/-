@@ -24,8 +24,8 @@ Poland::Poland(int playerNum) : Character()
 	yPos = 630;
 
 	jump = 6;
-	speed = 8;
-	power = 10;
+	speed = 9;
+	power = 4;
 
 	move = FALSE;
 }
@@ -91,11 +91,11 @@ void Poland::Draw(HDC hdc, int playerNum) const
 	}
 }
 
-void Poland::Move(int dir)
+void Poland::Move(int dir, int playerNum)
 {
 	switch (dir) {
 	case 1: // аб
-		xPos -= 8;
+		xPos -= speed;
 
 		if (xPos <= 75) {
 			xPos = 75;
@@ -104,7 +104,7 @@ void Poland::Move(int dir)
 		break;
 
 	case 2: // ©Л
-		xPos += 10;
+		xPos += speed;
 
 		if (xPos >= 900) {
 			xPos = 900;
