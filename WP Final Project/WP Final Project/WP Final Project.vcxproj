@@ -168,6 +168,10 @@
     <ClInclude Include="Israel.h" />
     <ClInclude Include="Italy.h" />
     <ClInclude Include="Poland.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

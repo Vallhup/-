@@ -34,7 +34,7 @@ void DrawBG(HDC hdc)
 	hBrush = CreateSolidBrush(RGB(0, 0, 0));
 	oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
 
-	RoundRect(hdc, WinSize.right / 2 - 80, 0, WinSize.right / 2 - 0 + size.cx, size.cy, 5, 5);
+	RoundRect(hdc, WinSize.right / 2 - 100, 0, WinSize.right / 2 - 0 + size.cx, size.cy, 5, 5);
 
 	SelectObject(hdc, oldBrush);
 	DeleteObject(hBrush);
@@ -42,7 +42,7 @@ void DrawBG(HDC hdc)
 	SetBkColor(hdc, RGB(0, 0, 0));
 	SetTextColor(hdc, RGB(255, 255, 255));
 
-	TextOut(hdc, WinSize.right / 2 - 40, 0, L"TIME", lstrlen(L"TIME"));
+	TextOut(hdc, WinSize.right / 2 - 50, 0, L"TIME", lstrlen(L"TIME"));
 
 	SelectObject(hdc, oldFont);
 	DeleteObject(hFont);
@@ -54,7 +54,7 @@ void DrawBG(HDC hdc)
 	SetTextColor(hdc, RGB(255, 70, 200));
 
 	wsprintf(Timer, L"%d : %02d", Timer_M, Timer_S);
-	TextOut(hdc, WinSize.right / 2 - 30, size.cy + 25, Timer, lstrlen(Timer));
+	TextOut(hdc, WinSize.right / 2 - 40, size.cy + 25, Timer, lstrlen(Timer));
 
 	SelectObject(hdc, oldFont);
 	DeleteObject(hFont);

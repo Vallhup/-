@@ -16,13 +16,15 @@
 #include "Israel.h"
 #include "Italy.h"
 #include "Poland.h"
+#include "resource.h"
 
 #pragma comment (lib, "msimg32.lib")
 
 HINSTANCE g_hInst;
-TCHAR lpszClass[] = TEXT("WP Final Project");
+TCHAR lpszClass[] = TEXT("HEAD SOCCER");
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
+BOOL CALLBACK Dialog_Proc(HWND, UINT, WPARAM, LPARAM);
 
 void LOOP(HWND, BOOL KB[]);
 
@@ -77,6 +79,9 @@ RECT P1Rect, P2Rect;
 
 int P1Num, P2Num;
 
+BOOL Pause = FALSE;
+int SceneNum = 0;
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	HDC hdc, memdc;
@@ -84,7 +89,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 	static int temp;
 
-	static int SceneNum = 0;
 	static HBITMAP hBitmap;
 
 	static CImage StartBG;
@@ -148,6 +152,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		case VK_UP:
 			KeyBuffer[wParam] = TRUE;
 			break;
+
+		case VK_ESCAPE:
+			if (SceneNum == 3) {
+				Pause = TRUE;
+				DialogBox(g_hInst, MAKEINTRESOURCE(IDD_DIALOG1), hWnd, (DLGPROC)Dialog_Proc);
+			}
+
+			break;
 		}
 
 		InvalidateRect(hWnd, NULL, FALSE);
@@ -168,7 +180,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		case VK_UP:
 			KeyBuffer[wParam] = FALSE;
 			break;
-
 		}
 		
 		break;
@@ -176,17 +187,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	case WM_TIMER:
 		switch (LOWORD(wParam)) {
 		case 1:
-			if (Timer_M == 1) {
-				Timer_M = 0;
-				Timer_S = 59;
-			}
+			if (!Pause) {
+				if (Timer_M == 1) {
+					Timer_M = 0;
+					Timer_S = 59;
+				}
 
-			else if(Timer_M == 0) {
-				if (--Timer_S == 0) {
-					KillTimer(hWnd, 1);
+				else if (Timer_M == 0) {
+					if (--Timer_S == 0) {
+						KillTimer(hWnd, 1);
+					}
 				}
 			}
-	
+
 			break;
 
 		case 2:
@@ -217,6 +230,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			if (JmpCnt2++ == 17) {
 				KillTimer(hWnd, 3);
 				JmpCnt2 = 0;
+			}
+
+			break;
+
+		case 4:
+			if (!Pause) {
+				P1->PwGaugeFull();
+				P2->PwGaugeFull();
 			}
 
 			break;
@@ -287,6 +308,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			if (sqrt(pow(500 - mouse.x, 2) + pow(530 - mouse.y, 2)) <= 110) {
 				SceneNum = 3;
 				SetTimer(hWnd, 1, 1000, NULL);
+				SetTimer(hWnd, 4, 1000, NULL);
 			}
 
 			break;
@@ -355,9 +377,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		(HBITMAP)SelectObject(memdc, hBitmap);
 
-		
-		
-
 		switch (SceneNum) {
 		case 1:
 			StartBG.BitBlt(memdc, 0, 0, 1000, 740, 0, 0, SRCCOPY);
@@ -381,11 +400,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 			ball.Draw(memdc);
 
-			LOOP(hWnd, KeyBuffer);
+			if (!Pause) {
+				LOOP(hWnd, KeyBuffer);
+			}
 
 			P1->Draw(memdc, 1);
 			P2->Draw(memdc, 2);
-	
+
 			break;
 		}
 
@@ -432,4 +453,26 @@ void LOOP(HWND hWnd, BOOL KB[]) {
 	{
 		SetTimer(hWnd, 3, 25, NULL);
 	}
+
+	
+}
+
+BOOL CALLBACK Dialog_Proc(HWND hDlg, UINT iMsg, WPARAM wParam, LPARAM lParam)
+{
+	switch (iMsg) {
+	case WM_COMMAND:
+		switch (wParam) {
+		case IDOK:
+			Pause = FALSE;
+			EndDialog(hDlg, 0);
+			break;
+
+		case IDCANCEL:
+			PostQuitMessage(0);
+			EndDialog(hDlg, 0);
+			break;
+		}
+	}
+
+	return FALSE;
 }

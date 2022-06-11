@@ -86,7 +86,6 @@ void Korea::Draw(HDC hdc, int playerNum) const
 
 		Head[playerNum - 1].TransparentBlt(hdc, xPos, yPos - 7, CHAR_SIZE, CHAR_SIZE, RGB(255, 0, 0));
 
-
 		break;
 	}
 }

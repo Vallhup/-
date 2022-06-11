@@ -12,17 +12,21 @@ protected:
 	int yPos = 0;
 
 	// 파워게이지
-	int powerGauge = 0;
+	int PwGauge = 0;
 
 	// 능력치
 	int jump;  // 5 ~ 6
 	int speed; // 8 ~ 10
 	int power; // 3 ~ 5
 
+	CImage PowerGaugeL, PowerGaugeFrameL;
+	CImage PowerGaugeR, PowerGaugeFrameR;
+
 public:
 	Character();
 
 	RECT CharPos();
+	void PwGaugeFull();
 
 	virtual void UI_Print(HDC hdc, int playerNum) const = 0;
 	virtual void Draw(HDC hdc, int playerNum) const = 0;

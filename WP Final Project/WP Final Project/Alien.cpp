@@ -27,15 +27,10 @@ Alien::Alien(int playerNum) : Character()
 	yPos = 630;
 
 	srand((unsigned int)time(NULL));
-	/*
+	
 	jump = rand() % 10 + 1;
 	speed = rand() % 10 + 1;
 	power = rand() % 10 + 1;
-	*/
-
-	jump = 10;
-	speed =10;
-	power =10;
 
 	move = FALSE;
 }
@@ -55,14 +50,20 @@ void Alien::UI_Print(HDC hdc, int playerNum) const
 	case 1:
 		TextOut(hdc, WinSize.right / 4 + 60, 140, str, lstrlen(str));
 
-		flag.StretchBlt(hdc, 300, 57, 100, 66, SRCCOPY);
+		flag.StretchBlt(hdc, 285, 57, 100, 66, SRCCOPY);
+
+		PowerGaugeL.TransparentBlt(hdc, 269 - (248 * PwGauge / 100), 12, 248 * PwGauge / 100, 98, 100 - PwGauge, 0, PwGauge, 30, RGB(255, 255, 255));
+		PowerGaugeFrameL.TransparentBlt(hdc, 20, 10, 250, 100, RGB(255, 255, 255));
 
 		break;
 
 	case 2:
-		TextOut(hdc, WinSize.right / 4 * 3 - 60, 140, str, lstrlen(str));
+		TextOut(hdc, WinSize.right / 4 * 3 - 80, 140, str, lstrlen(str));
 
-		flag.StretchBlt(hdc, 630, 57, 100, 66, SRCCOPY);
+		flag.StretchBlt(hdc, 615, 57, 100, 66, SRCCOPY);
+
+		PowerGaugeR.TransparentBlt(hdc, WinSize.right - 269, 12, 248 * PwGauge / 100, 98, 0, 0, PwGauge, 30, RGB(255, 255, 255));
+		PowerGaugeFrameR.TransparentBlt(hdc, WinSize.right - 270, 10, 250, 100, RGB(255, 255, 255));
 
 		break;
 	}
@@ -95,7 +96,6 @@ void Alien::Draw(HDC hdc, int playerNum) const
 		}
 
 		Head[playerNum - 1].TransparentBlt(hdc, xPos, yPos - 7, CHAR_SIZE, CHAR_SIZE, RGB(255, 0, 0));
-
 
 		break;
 	}
