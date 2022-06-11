@@ -109,6 +109,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 	static RECT CharSelRect[10];
 
+	static int P1Score, P2Score;
+
 	switch (iMessage) {
 	case WM_CREATE:
 		SceneNum = 1;
@@ -196,6 +198,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				else if (Timer_M == 0) {
 					if (--Timer_S == 0) {
 						KillTimer(hWnd, 1);
+						SceneNum = 4;
 					}
 				}
 			}
@@ -312,6 +315,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			}
 
 			break;
+
+		case 4:
+			if (sqrt(pow(500 - mouse.x, 2) + pow(320 - mouse.y, 2)) <= 100) {
+				SceneNum = 2;
+				Timer_M = 1;
+				Timer_S = 0;
+			}
+
+			else if (sqrt(pow(500 - mouse.x, 2) + pow(570 - mouse.y, 2)) <= 100) {
+				PostQuitMessage(0);
+			}
+
+			break;
 		}
 
 		InvalidateRect(hWnd, NULL, FALSE);
@@ -384,7 +400,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		case 2:
 			CharSelectBG.StretchBlt(memdc, WinSize, SRCCOPY);
-			DrawSelectBG(memdc);
+			DrawSelectBG(memdc, 0, 0);
 			break;
 
 		case 3:
@@ -408,7 +424,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			P2->Draw(memdc, 2);
 
 			break;
+
+		case 4:
+			P1Score = P1->CharScore();
+			P2Score = P2->CharScore();
+
+			DrawSelectBG(memdc, P1Score, P2Score);
+
+			break;
 		}
+
+		wsprintf(str, L"%d  %d", mouse.x, mouse.y);
+		TextOut(memdc, 0, 0, str, lstrlen(str));
 
 		BitBlt(hdc, 0, 0, 1000, 800, memdc, 0, 0, SRCCOPY);
 
@@ -453,8 +480,6 @@ void LOOP(HWND hWnd, BOOL KB[]) {
 	{
 		SetTimer(hWnd, 3, 25, NULL);
 	}
-
-	
 }
 
 BOOL CALLBACK Dialog_Proc(HWND hDlg, UINT iMsg, WPARAM wParam, LPARAM lParam)

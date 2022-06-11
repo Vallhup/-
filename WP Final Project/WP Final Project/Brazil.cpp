@@ -26,8 +26,6 @@ Brazil::Brazil(int playerNum) : Character()
 	jump = 6;
 	speed = 10;
 	power = 3;
-
-	move = FALSE;
 }
 
 void Brazil::UI_Print(HDC hdc, int playerNum) const

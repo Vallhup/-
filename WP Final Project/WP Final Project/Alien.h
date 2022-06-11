@@ -9,16 +9,10 @@
 class Alien : public Character
 {
 	CImage Head[2];
-	CImage Body[3];
+	CImage Body;
 
 	// ±ê¹ß
 	CImage flag;
-
-	// Á¡¼ö
-	int score = 0;
-
-	//
-	BOOL move;
 
 public:
 	Alien(int playerNum);

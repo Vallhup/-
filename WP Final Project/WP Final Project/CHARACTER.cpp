@@ -16,10 +16,16 @@ Character::Character()
 	PowerGaugeFrameR.Load(_T("PowerGaugeFrame_R.png"));
 }
 
-RECT Character::CharPos()
+RECT Character::CharPos() const
 {
 	RECT CharPos = { xPos, yPos, xPos + CHAR_SIZE, yPos + CHAR_SIZE + 7 };
 	return CharPos;
+}
+
+int Character::CharScore() const
+
+{
+	return score;
 }
 
 void Character::PwGaugeFull()

@@ -12,6 +12,7 @@ extern int Timer_S;
 
 extern TCHAR Timer[10];
 
+extern int SceneNum;
 extern int P1Num, P2Num;
 
 void DrawBG(HDC hdc)
@@ -60,7 +61,7 @@ void DrawBG(HDC hdc)
 	DeleteObject(hFont);
 }
 
-void DrawSelectBG(HDC hdc)
+void DrawSelectBG(HDC hdc, int P1Score, int P2Score)
 {
 	CImage Char[2][10];
 
@@ -86,31 +87,203 @@ void DrawSelectBG(HDC hdc)
 	Char[1][8].Load(_T("sprite\\Korea_R.png"));
 	Char[1][9].Load(_T("sprite\\Poland_R.png"));
 
-	for (int i = 0; i < 2; ++i) {
-		for (int j = 0; j < 5; ++j) {
-			if ((j + (i * 5) == 1) || (j + (i * 5) == 4) || (j + (i * 5) == 5)) {
-				Char[0][j + (i * 5)].TransparentBlt(hdc, 250 + (j * 100), 30 + (i * 120), 100, 100, RGB(0, 255, 0));
-			}
+	if (SceneNum == 2) {
+		for (int i = 0; i < 2; ++i) {
+			for (int j = 0; j < 5; ++j) {
+				if ((j + (i * 5) == 1) || (j + (i * 5) == 4) || (j + (i * 5) == 5)) {
+					Char[0][j + (i * 5)].TransparentBlt(hdc, 250 + (j * 100), 30 + (i * 120), 100, 100, RGB(0, 255, 0));
+				}
 
-			else {
-				Char[0][j + (i * 5)].TransparentBlt(hdc, 250 + (j * 100), 30 + (i * 120), 100, 100, RGB(255, 0, 0));
+				else {
+					Char[0][j + (i * 5)].TransparentBlt(hdc, 250 + (j * 100), 30 + (i * 120), 100, 100, RGB(255, 0, 0));
+				}
 			}
+		}
+
+		if ((P1Num == 1) || (P1Num == 4) || (P1Num == 5)) {
+			Char[0][P1Num].TransparentBlt(hdc, 50, 400, 300, 300, RGB(0, 255, 0));
+		}
+
+		else {
+			Char[0][P1Num].TransparentBlt(hdc, 50, 400, 300, 300, RGB(255, 0, 0));
+		}
+
+		if ((P2Num == 1) || (P2Num == 4) || (P2Num == 5)) {
+			Char[1][P2Num].TransparentBlt(hdc, WinSize.right - 350, 400, 300, 300, RGB(0, 255, 0));
+		}
+
+		else {
+			Char[1][P2Num].TransparentBlt(hdc, WinSize.right - 350, 400, 300, 300, RGB(255, 0, 0));
 		}
 	}
 
-	if ((P1Num == 1) || (P1Num == 4) || (P1Num == 5)) {
-		Char[0][P1Num].TransparentBlt(hdc, 50, 400, 300, 300, RGB(0, 255, 0));
+	else if (SceneNum == 4) {
+		CImage ResultBG;
+
+		ResultBG.Load(_T("ResultBG.png"));
+		ResultBG.StretchBlt(hdc, WinSize, SRCCOPY);
+
+		TCHAR result[2][10];
+
+		HFONT hFont, oldFont;
+		SIZE size;
+
+		hFont = CreateFont(100, 0, 0, 0, FW_ULTRABOLD, 0, 0, 0, HANGEUL_CHARSET, 0, 0, 0, VARIABLE_PITCH | FF_ROMAN, TEXT("±¼¸²"));
+		oldFont = (HFONT)SelectObject(hdc, hFont);
+
+		SetBkColor(hdc, RGB(0, 117, 175));
+
+		if (P1Score > P2Score) {
+			SetTextColor(hdc, RGB(0, 255, 0));
+			wsprintf(result[0], L"WIN");
+			TextOut(hdc, 50, 50, result[0], lstrlen(result[0]));
+
+			SetTextColor(hdc, RGB(110, 0, 130));
+			wsprintf(result[1], L"LOSE");
+			GetTextExtentPoint32(hdc, result[1], lstrlen(result[1]), &size);
+			TextOut(hdc, WinSize.right - 50 - size.cx, 50, result[1], lstrlen(result[1]));
+		}
+
+		else if (P1Score == P2Score) {
+			SetTextColor(hdc, RGB(255, 255, 0));
+			wsprintf(result[0], L"DRAW");
+			TextOut(hdc, 50, 50, result[0], lstrlen(result[0]));
+
+			wsprintf(result[1], L"DRAW");
+			GetTextExtentPoint32(hdc, result[1], lstrlen(result[1]), &size);
+			TextOut(hdc, WinSize.right - 50 - size.cx, 50, result[1], lstrlen(result[1]));
+		}
+
+		else {
+			SetTextColor(hdc, RGB(110, 0, 130));
+			wsprintf(result[0], L"LOSE");
+			TextOut(hdc, 50, 50, result[0], lstrlen(result[0]));
+
+			SetTextColor(hdc, RGB(0, 255, 0));
+			wsprintf(result[1], L"WIN");
+			GetTextExtentPoint32(hdc, result[1], lstrlen(result[1]), &size);
+			TextOut(hdc, WinSize.right - 50 - size.cx, 50, result[1], lstrlen(result[1]));
+		}
+
+		if ((P1Num == 1) || (P1Num == 4) || (P1Num == 5)) {
+			Char[0][P1Num].TransparentBlt(hdc, 50, 400, 300, 300, RGB(0, 255, 0));
+		}
+
+		else {
+			Char[0][P1Num].TransparentBlt(hdc, 50, 400, 300, 300, RGB(255, 0, 0));
+		}
+
+		if ((P2Num == 1) || (P2Num == 4) || (P2Num == 5)) {
+			Char[1][P2Num].TransparentBlt(hdc, WinSize.right - 350, 400, 300, 300, RGB(0, 255, 0));
+		}
+
+		else {
+			Char[1][P2Num].TransparentBlt(hdc, WinSize.right - 350, 400, 300, 300, RGB(255, 0, 0));
+		}
+
+		TCHAR SCORE[2][10];
+
+		wsprintf(SCORE[0], L"%d", P1Score);
+		wsprintf(SCORE[1], L"%d", P2Score);
+
+		GetTextExtentPoint32(hdc, SCORE[1], lstrlen(SCORE[1]), &size);
+
+		SetTextColor(hdc, RGB(255, 255, 0));
+
+		TextOut(hdc, 150, 200, SCORE[0], lstrlen(SCORE[0]));
+		TextOut(hdc, WinSize.right - 150 - size.cx, 200, SCORE[1], lstrlen(SCORE[1]));
+
+		SelectObject(hdc, oldFont);
+		DeleteObject(hFont);
+	}
+}
+
+void ResultBG(HDC hdc)
+{
+	CImage CharP1;
+	CImage CharP2;
+
+	switch (P1Num) {
+	case 0:
+		CharP1.Load(_T("sprite\\Alien_L.png"));
+		break;
+
+	case 1:
+		CharP1.Load(_T("sprite\\Asura_L.png"));
+		break;
+
+	case 2:
+		CharP1.Load(_T("sprite\\Brazil_L.png"));
+		break;
+
+	case 3:
+		CharP1.Load(_T("sprite\\Cameroon_L.png"));
+		break;
+
+	case 4:
+		CharP1.Load(_T("sprite\\Canada_L.png"));
+		break;
+
+	case 5:
+		CharP1.Load(_T("sprite\\Egypt_L.png"));
+		break;
+
+	case 6:
+		CharP1.Load(_T("sprite\\Israel_L.png"));
+		break;
+
+	case 7:
+		CharP1.Load(_T("sprite\\Italy_L.png"));
+		break;
+
+	case 8:
+		CharP1.Load(_T("sprite\\Korea_L.png"));
+		break;
+
+	case 9:
+		CharP1.Load(_T("sprite\\Poland_L.png"));
+		break;
 	}
 
-	else {
-		Char[0][P1Num].TransparentBlt(hdc, 50, 400, 300, 300, RGB(255, 0, 0));
-	}
+	switch (P2Num) {
+	case 0:
+		CharP2.Load(_T("sprite\\Alien_L.png"));
+		break;
 
-	if ((P2Num == 1) || (P2Num == 4) || (P2Num == 5)) {
-		Char[1][P2Num].TransparentBlt(hdc, WinSize.right - 350, 400, 300, 300, RGB(0, 255, 0));
-	}
+	case 1:
+		CharP2.Load(_T("sprite\\Asura_L.png"));
+		break;
 
-	else {
-		Char[1][P2Num].TransparentBlt(hdc, WinSize.right - 350, 400, 300, 300, RGB(255, 0, 0));
+	case 2:
+		CharP1.Load(_T("sprite\\Brazil_L.png"));
+		break;
+
+	case 3:
+		CharP1.Load(_T("sprite\\Cameroon_L.png"));
+		break;
+
+	case 4:
+		CharP1.Load(_T("sprite\\Canada_L.png"));
+		break;
+
+	case 5:
+		CharP1.Load(_T("sprite\\Egypt_L.png"));
+		break;
+
+	case 6:
+		CharP1.Load(_T("sprite\\Israel_L.png"));
+		break;
+
+	case 7:
+		CharP1.Load(_T("sprite\\Italy_L.png"));
+		break;
+
+	case 8:
+		CharP1.Load(_T("sprite\\Korea_L.png"));
+		break;
+
+	case 9:
+		CharP1.Load(_T("sprite\\Poland_L.png"));
+		break;
 	}
 }

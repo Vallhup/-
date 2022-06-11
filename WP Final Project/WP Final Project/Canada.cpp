@@ -29,8 +29,6 @@ Canada::Canada(int playerNum) : Character()
 	jump = 6;
 	speed = 9;
 	power = 4;
-
-	move = FALSE;
 }
 
 void Canada::UI_Print(HDC hdc, int playerNum) const

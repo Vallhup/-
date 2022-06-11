@@ -26,8 +26,6 @@ Italy::Italy(int playerNum) : Character()
 	jump = 5;
 	speed = 8;
 	power = 5;
-
-	move = FALSE;
 }
 
 void Italy::UI_Print(HDC hdc, int playerNum) const

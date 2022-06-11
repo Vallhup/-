@@ -26,8 +26,6 @@ Korea::Korea(int playerNum) : Character()
 	jump = 5;
 	speed = 8;
 	power = 5;
-
-	move = FALSE;
 }
 
 void Korea::UI_Print(HDC hdc, int playerNum) const
@@ -118,6 +116,7 @@ void Korea::Jump(int dir)
 	if (dir) {
 		yPos -= jump;
 	}
+
 
 	else {
 		yPos += jump;

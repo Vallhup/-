@@ -26,8 +26,6 @@ Asura::Asura(int playerNum) : Character()
 	jump = 6;
 	speed = 10;
 	power = 3;
-
-	move = FALSE;
 }
 
 void Asura::UI_Print(HDC hdc, int playerNum) const

@@ -13,12 +13,6 @@ class Italy : public Character
 	// ±ê¹ß
 	CImage flag;
 
-	// Á¡¼ö
-	int score = 0;
-
-	//
-	BOOL move;
-
 public:
 	Italy(int playerNum);
 

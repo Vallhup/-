@@ -26,8 +26,6 @@ Cameroon::Cameroon(int playerNum) : Character()
 	jump = 5;
 	speed = 9;
 	power = 4;
-
-	move = FALSE;
 }
 
 void Cameroon::UI_Print(HDC hdc, int playerNum) const

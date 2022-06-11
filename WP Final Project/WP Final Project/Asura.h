@@ -13,12 +13,6 @@ class Asura : public Character
 	// ±ê¹ß
 	CImage flag;
 
-	// Á¡¼ö
-	int score = 0;
-
-	//
-	BOOL move;
-
 public:
 	Asura(int playerNum);
 

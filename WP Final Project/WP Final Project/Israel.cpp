@@ -26,8 +26,6 @@ Israel::Israel(int playerNum) : Character()
 	jump = 5;
 	speed = 9;
 	power = 4;
-
-	move = FALSE;
 }
 
 void Israel::UI_Print(HDC hdc, int playerNum) const
