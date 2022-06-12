@@ -63,25 +63,13 @@ void Asura::Draw(HDC hdc, int playerNum) const
 {
 	switch (playerNum) {
 	case 1:
-		if (move) {
-		}
-
-		else {
-			Body[0].TransparentBlt(hdc, xPos, yPos, CHAR_SIZE, CHAR_SIZE, RGB(255, 255, 255));
-		}
-
+		Body[0].TransparentBlt(hdc, xPos, yPos, CHAR_SIZE, CHAR_SIZE, RGB(255, 255, 255));
 		Head[playerNum - 1].TransparentBlt(hdc, xPos, yPos - 7, CHAR_SIZE, CHAR_SIZE, RGB(0, 255, 0));
 
 		break;
 
 	case 2:
-		if (move) {
-		}
-
-		else {
-			Body[0].TransparentBlt(hdc, xPos, yPos, CHAR_SIZE, CHAR_SIZE, RGB(255, 255, 255));
-		}
-
+		Body[0].TransparentBlt(hdc, xPos, yPos, CHAR_SIZE, CHAR_SIZE, RGB(255, 255, 255));
 		Head[playerNum - 1].TransparentBlt(hdc, xPos, yPos - 7, CHAR_SIZE, CHAR_SIZE, RGB(0, 255, 0));
 
 

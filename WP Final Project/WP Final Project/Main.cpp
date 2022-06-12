@@ -82,6 +82,8 @@ int P1Num, P2Num;
 BOOL Pause = FALSE;
 int SceneNum = 0;
 
+extern float v_0;
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	HDC hdc, memdc;
@@ -244,6 +246,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			}
 
 			break;
+
+		case 5:
+			ball.Action();
+			ball.Check_Crash(hWnd);
+
+			if (v_0 == 0) {
+				KillTimer(hWnd, 5);
+			}
+
+			break;
 		}
 
 		InvalidateRect(hWnd, NULL, FALSE);
@@ -312,6 +324,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				SceneNum = 3;
 				SetTimer(hWnd, 1, 1000, NULL);
 				SetTimer(hWnd, 4, 1000, NULL);
+				SetTimer(hWnd, 5, 10, NULL);
 			}
 
 			break;
