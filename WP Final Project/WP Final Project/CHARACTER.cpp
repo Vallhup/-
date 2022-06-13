@@ -36,3 +36,36 @@ void Character::PwGaugeFull()
 		PwGauge = 100;
 	}
 }
+
+void Character::Kick(int playerNum)
+{
+	kick = playerNum - kick;
+}
+
+void Character::Goal()
+{
+	score++;
+}
+
+void Character::Goaled()
+{
+	PwGauge += 20;
+	if (PwGauge >= 100) {
+		PwGauge = 100;
+	}
+}
+
+void Character::ResetPos(int playerNum)
+{
+	switch (playerNum)
+	{
+	case 1:
+		xPos = 100;
+		break;
+
+	case 2:
+		xPos = 875;
+		break;
+	}
+	yPos = 630;
+}

@@ -10,7 +10,9 @@ Alien::Alien(int playerNum) : Character()
 	Head[0].Load(_T("sprite\\Alien_L.png"));
 	Head[1].Load(_T("sprite\\Alien_R.png"));
 
-	Body.Load(_T("sprite\\body.png"));
+	Body[0].Load(_T("sprite\\body.png"));
+	Body[1].Load(_T("sprite\\kick_L.png"));
+	Body[2].Load(_T("sprite\\kick_R.png"));
 
 	flag.Load(_T("sprite\\flag_Alien.png"));
 
@@ -28,9 +30,9 @@ Alien::Alien(int playerNum) : Character()
 
 	srand((unsigned int)time(NULL));
 	
-	jump = rand() % 10 + 1;
-	speed = rand() % 10 + 1;
-	power = rand() % 10 + 1;
+	jump = rand() % 6 + 1;
+	speed = rand() % 7 + 1;
+	power = rand() % 5 + 1;
 }
 
 void Alien::UI_Print(HDC hdc, int playerNum) const
@@ -74,13 +76,13 @@ void Alien::Draw(HDC hdc, int playerNum) const
 {
 	switch (playerNum) {
 	case 1:
-		Body.TransparentBlt(hdc, xPos, yPos, CHAR_SIZE, CHAR_SIZE, RGB(255, 255, 255));
+		Body[kick].TransparentBlt(hdc, xPos, yPos, CHAR_SIZE, CHAR_SIZE, RGB(255, 255, 255));
 		Head[playerNum - 1].TransparentBlt(hdc, xPos, yPos - 7, CHAR_SIZE, CHAR_SIZE, RGB(255, 0, 0));
 
 		break;
 
 	case 2:
-		Body.TransparentBlt(hdc, xPos, yPos, CHAR_SIZE, CHAR_SIZE, RGB(255, 255, 255));
+		Body[kick].TransparentBlt(hdc, xPos, yPos, CHAR_SIZE, CHAR_SIZE, RGB(255, 255, 255));
 		Head[playerNum - 1].TransparentBlt(hdc, xPos, yPos - 7, CHAR_SIZE, CHAR_SIZE, RGB(255, 0, 0));
 
 		break;

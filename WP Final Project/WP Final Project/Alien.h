@@ -9,7 +9,7 @@
 class Alien : public Character
 {
 	CImage Head[2];
-	CImage Body;
+	CImage Body[3];
 
 	// ±ê¹ß
 	CImage flag;
