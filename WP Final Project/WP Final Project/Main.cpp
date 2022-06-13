@@ -19,6 +19,7 @@
 #include "resource.h"
 
 #pragma comment (lib, "msimg32.lib")
+#pragma comment (lib, "winmm.lib")
 
 HINSTANCE g_hInst;
 TCHAR lpszClass[] = TEXT("HEAD SOCCER");
@@ -148,6 +149,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		JmpCnt1 = JmpCnt2 = 0;
 		Kick1 = Kick2 = Goal1 = Goal2 = FALSE;
 
+		PlaySound(L"sound\\bgm.wav", NULL, SND_ASYNC | SND_LOOP);
+
 		break;
 
 	case WM_KEYDOWN:
@@ -221,6 +224,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 						KillTimer(hWnd, 1);
 						KillTimer(hWnd, 2);
 						KillTimer(hWnd, 5);
+						PlaySound(L"sound\\whistle.wav", NULL, SND_ASYNC);
 						SceneNum = 4;
 					}
 				}
@@ -285,6 +289,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				P2Power = FALSE;
 				P1Crash = FALSE;
 				P2Crash = FALSE;
+				PlaySound(L"sound\\bgm.wav", NULL, SND_ASYNC | SND_LOOP);
 			}
 
 			else if (Goal2)
@@ -301,6 +306,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				P2Power = FALSE;
 				P1Crash = FALSE;
 				P2Crash = FALSE;
+				PlaySound(L"sound\\bgm.wav", NULL, SND_ASYNC | SND_LOOP);
 			}
 
 			break;
@@ -403,6 +409,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				KillTimer(hWnd, 3);
 				KillTimer(hWnd, 4);
 				KillTimer(hWnd, 5);
+				PlaySound(L"sound\\bgm.wav", NULL, SND_ASYNC | SND_LOOP);
 			}
 
 			else if (sqrt(pow(500 - mouse.x, 2) + pow(570 - mouse.y, 2)) <= 100) {

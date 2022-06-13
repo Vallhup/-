@@ -5,6 +5,7 @@
 #define GRAVITY 0.5
 #define FRICTION 0.8
 
+#include <mmsystem.h>
 #include "CHARACTER.h"
 
 class Ball {

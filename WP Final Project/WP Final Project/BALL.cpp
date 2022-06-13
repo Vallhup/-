@@ -49,7 +49,7 @@ void Ball::Reset()
 	xPos = 500;
 	yPos = 300;
 	xVel = yVel = 0;
-	Sleep(1000);
+	Sleep(1300);
 }
 
 void Ball::Physics(Character* p1, Character* p2)
@@ -180,10 +180,12 @@ void Ball::Physics(Character* p1, Character* p2)
 	{
 		if (xPos <= 92)
 		{
+			PlaySound(L"sound\\loud.wav", NULL, SND_ASYNC);
 			Goal1 = TRUE;
 		}
 		else if (xPos >= 930)
 		{
+			PlaySound(L"sound\\loud.wav", NULL, SND_ASYNC);
 			Goal2 = TRUE;
 		}
 	}
