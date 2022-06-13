@@ -1,3 +1,21 @@
-﻿  Main.cpp
-C:\Users\ths12\OneDrive\Desktop\윈플 기말 텀프\-\WP Final Project\WP Final Project\Main.cpp(36,16): warning C4244: 'return': 'WPARAM'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+﻿  BACKGROUND.cpp
+  BALL.cpp
+C:\Users\ths12\OneDrive\Desktop\윈플 기말 텀프\-\WP Final Project\WP Final Project\BALL.cpp(76,24): warning C4838: 'double'에서 'LONG'(으)로의 변환에는 축소 변환이 필요합니다.
+C:\Users\ths12\OneDrive\Desktop\윈플 기말 텀프\-\WP Final Project\WP Final Project\BALL.cpp(76,24): warning C4244: '초기화 중': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ths12\OneDrive\Desktop\윈플 기말 텀프\-\WP Final Project\WP Final Project\BALL.cpp(76,40): warning C4838: 'double'에서 'LONG'(으)로의 변환에는 축소 변환이 필요합니다.
+C:\Users\ths12\OneDrive\Desktop\윈플 기말 텀프\-\WP Final Project\WP Final Project\BALL.cpp(76,40): warning C4244: '초기화 중': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  CHARACTER.cpp
+  Korea.cpp
+  Main.cpp
+C:\Users\ths12\OneDrive\Desktop\윈플 기말 텀프\-\WP Final Project\WP Final Project\Main.cpp(58,16): warning C4244: 'return': 'WPARAM'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Alien.cpp
+  Asura.cpp
+  Brazil.cpp
+  Cameroon.cpp
+  Canada.cpp
+  Egypt.cpp
+  Israel.cpp
+  Italy.cpp
+  Poland.cpp
+  코드를 생성하고 있습니다...
   WP Final Project.vcxproj -> C:\Users\ths12\OneDrive\Desktop\윈플 기말 텀프\-\WP Final Project\x64\Debug\WP Final Project.exe

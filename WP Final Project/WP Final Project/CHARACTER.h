@@ -17,9 +17,9 @@ protected:
 	int PwGauge = 0;
 
 	// 능력치
-	int jump;  // 5 ~ 6
-	int speed; // 5 ~ 7
-	int power; // 3 ~ 5
+	int jump = 0;  // 5 ~ 6
+	int speed = 0; // 5 ~ 7
+	int power = 0; // 3 ~ 5
 
 	// 점수
 	int score = 0;
@@ -46,6 +46,6 @@ public:
 	void Goal();
 	void Goaled();
 	void ResetPos(int);
-	~Character();
+	virtual ~Character();
 };
 
