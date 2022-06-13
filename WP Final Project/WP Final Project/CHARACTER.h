@@ -46,5 +46,6 @@ public:
 	void Goal();
 	void Goaled();
 	void ResetPos(int);
+	~Character();
 };
 

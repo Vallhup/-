@@ -69,3 +69,11 @@ void Character::ResetPos(int playerNum)
 	}
 	yPos = 630;
 }
+
+Character::~Character()
+{
+	PowerGaugeL.Destroy();
+	PowerGaugeR.Destroy();
+	PowerGaugeFrameL.Destroy();
+	PowerGaugeFrameR.Destroy();
+}

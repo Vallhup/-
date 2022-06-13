@@ -150,3 +150,13 @@ void Alien::Jump(int dir)
 		yPos += jump;
 	}
 }
+
+Alien::~Alien()
+{
+	Head[0].Destroy();
+	Head[1].Destroy();
+	Body[0].Destroy();
+	Body[1].Destroy();
+	Body[2].Destroy();
+	flag.Destroy();
+}

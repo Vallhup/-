@@ -143,3 +143,10 @@ void Ball::Physics(Character* p1, Character* p2)
 		}
 	}
 }
+
+Ball::~Ball()
+{
+	ballSkin[0].Destroy();
+	ballSkin[1].Destroy();
+	ballSkin[2].Destroy();
+}
