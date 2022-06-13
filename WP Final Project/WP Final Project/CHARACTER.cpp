@@ -9,11 +9,11 @@ Character::Character()
 	yPos = 0;
 	PwGauge = 0;
 
-	PowerGaugeL.Load(_T("PowerGauge_L.png"));
-	PowerGaugeFrameL.Load(_T("PowerGaugeFrame_L.png"));
+	PowerGaugeL.Load(_T("sprite\\PowerGauge_L.png"));
+	PowerGaugeFrameL.Load(_T("sprite\\PowerGaugeFrame_L.png"));
 
-	PowerGaugeR.Load(_T("PowerGauge_R.png"));
-	PowerGaugeFrameR.Load(_T("PowerGaugeFrame_R.png"));
+	PowerGaugeR.Load(_T("sprite\\PowerGauge_R.png"));
+	PowerGaugeFrameR.Load(_T("sprite\\PowerGaugeFrame_R.png"));
 }
 
 RECT Character::CharPos() const

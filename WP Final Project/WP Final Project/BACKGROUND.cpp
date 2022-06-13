@@ -120,7 +120,7 @@ void DrawSelectBG(HDC hdc, int P1Score, int P2Score)
 	else if (SceneNum == 4) {
 		CImage ResultBG;
 
-		ResultBG.Load(_T("ResultBG.png"));
+		ResultBG.Load(_T("sprite\\ResultBG.png"));
 		ResultBG.StretchBlt(hdc, WinSize, SRCCOPY);
 
 		TCHAR result[2][10];

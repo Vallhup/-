@@ -122,11 +122,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		P1Num = P2Num = 0;
 
-		StartBG.Load(_T("StartBG.png"));
-		CharSelectBG.Load(_T("CharSelectBG.png"));
-		BackGround.Load(_T("BackGround.png"));
-		GoalPostR.Load(_T("GoalPost - R.png"));
-		GoalPostL.Load(_T("GoalPost - L.png"));
+		StartBG.Load(_T("sprite\\StartBG.png"));
+		CharSelectBG.Load(_T("sprite\\CharSelectBG.png"));
+		BackGround.Load(_T("sprite\\BackGround.png"));
+		GoalPostR.Load(_T("sprite\\GoalPost - R.png"));
+		GoalPostL.Load(_T("sprite\\GoalPost - L.png"));
 
 		for (int i = 0; i < 2; ++i) {
 			for (int j = 0; j < 5; ++j) {

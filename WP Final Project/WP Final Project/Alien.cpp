@@ -105,6 +105,7 @@ void Alien::Move(int dir, int playerNum)
 				break;
 
 			case 2:
+				xPos = P1Rect.right + 1;
 				break;
 			}
 			CrashCheck = FALSE;
@@ -127,6 +128,7 @@ void Alien::Move(int dir, int playerNum)
 				break;
 
 			case 2:
+				xPos = P1Rect.right + 1;
 				break;
 			}
 			CrashCheck = FALSE;
