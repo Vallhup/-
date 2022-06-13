@@ -14,9 +14,12 @@ extern TCHAR Timer[10];
 
 extern int SceneNum;
 extern int P1Num, P2Num;
+
 extern CImage Char[2][10];
 extern 	CImage CharP1;
 extern CImage CharP2;
+
+extern CImage ResBG;
 
 void DrawBG(HDC hdc)
 {
@@ -119,10 +122,8 @@ void DrawSelectBG(HDC hdc, int P1Score, int P2Score)
 	}
 
 	else if (SceneNum == 4) {
-		CImage ResultBG;
-
-		ResultBG.Load(_T("sprite\\ResultBG.png"));
-		ResultBG.StretchBlt(hdc, WinSize, SRCCOPY);
+		ResBG.Load(_T("sprite\\ResultBG.png"));
+		ResBG.StretchBlt(hdc, WinSize, SRCCOPY);
 
 		TCHAR result[2][10];
 
@@ -299,6 +300,7 @@ void DeleteSelBG()
 
 void DeleteResBG()
 {
+	ResBG.Destroy();
 	CharP1.Destroy();
 	CharP2.Destroy();
 }

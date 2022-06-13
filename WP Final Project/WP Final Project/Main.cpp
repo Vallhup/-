@@ -88,12 +88,12 @@ CImage Char[2][10];
 CImage CharP1;
 CImage CharP2;
 
+CImage ResBG;
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	HDC hdc, memdc;
 	PAINTSTRUCT ps;
-
-	static int temp;
 
 	static HBITMAP hBitmap;
 
@@ -210,6 +210,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				else if (Timer_M == 0) {
 					if (--Timer_S == 0) {
 						KillTimer(hWnd, 1);
+						KillTimer(hWnd, 2);
 						KillTimer(hWnd, 5);
 						SceneNum = 4;
 					}
@@ -376,8 +377,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				Timer_S = 0;
 				ball.Reset();
 				DeleteResBG();
-				delete(P1);
-				delete(P2);
+				delete P1;
+				delete P2;
 				KillTimer(hWnd, 2);
 				KillTimer(hWnd, 3);
 				KillTimer(hWnd, 4);
@@ -386,8 +387,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 			else if (sqrt(pow(500 - mouse.x, 2) + pow(570 - mouse.y, 2)) <= 100) {
 				DeleteResBG();
-				delete(P1);
-				delete(P2);
+				delete P1;
+				delete P2;
 				StartBG.Destroy();
 				CharSelectBG.Destroy();
 				BackGround.Destroy();
@@ -505,14 +506,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		BitBlt(hdc, 0, 0, 1000, 800, memdc, 0, 0, SRCCOPY);
 
+		DeleteDC(memdc);
 		EndPaint(hWnd, &ps);
 
 		break;
 
 	case WM_DESTROY:
+		DeleteObject(hBitmap);
 		DeleteResBG();
-		delete(P1);
-		delete(P2);
+		delete P1;
+		delete P2;
 		StartBG.Destroy();
 		CharSelectBG.Destroy();
 		BackGround.Destroy();

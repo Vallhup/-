@@ -23,7 +23,6 @@ RECT Character::CharPos() const
 }
 
 int Character::CharScore() const
-
 {
 	return score;
 }
