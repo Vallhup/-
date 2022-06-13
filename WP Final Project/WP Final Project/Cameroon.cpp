@@ -16,6 +16,8 @@ Cameroon::Cameroon(int playerNum) : Character()
 
 	flag.Load(_T("sprite\\flag_Cameroon.png"));
 
+	Power.Load(_T("sprite\\cameroonPower.png"));
+
 	switch (playerNum) {
 	case 1:
 		xPos = 100;
@@ -149,6 +151,12 @@ void Cameroon::Jump(int dir)
 	}
 }
 
+void Cameroon::PowerShoot(HDC hdc, int playerNum, double xpos, double ypos)
+{
+	Power.TransparentBlt(hdc, xpos, ypos, 30, 30, RGB(255, 0, 0));
+	PwGauge = 0;
+}
+
 Cameroon::~Cameroon()
 {
 	Head[0].Destroy();
@@ -156,5 +164,6 @@ Cameroon::~Cameroon()
 	Body[0].Destroy();
 	Body[1].Destroy();
 	Body[2].Destroy();
+	Power.Destroy();
 	flag.Destroy();
 }

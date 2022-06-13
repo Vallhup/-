@@ -90,6 +90,9 @@ CImage CharP2;
 
 CImage ResBG;
 
+BOOL P1Power, P2Power;
+BOOL P1Crash, P2Crash;
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	HDC hdc, memdc;
@@ -157,10 +160,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		case 'W':
 		case 's':
 		case 'S':
+		case 'f':
+		case 'F':
 		case VK_LEFT: // 2p аб
 		case VK_RIGHT: // 2p ©Л
 		case VK_UP:
 		case VK_DOWN:
+		case VK_RETURN:
 			KeyBuffer[wParam] = TRUE;
 			break;
 
@@ -188,10 +194,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		case 'W':
 		case 's':
 		case 'S':
+		case 'f':
+		case 'F':
 		case VK_LEFT: // 2p аб
 		case VK_RIGHT: // 2p ©Л
 		case VK_UP:
 		case VK_DOWN:
+		case VK_RETURN:
 			KeyBuffer[wParam] = FALSE;
 			break;
 		}
@@ -261,6 +270,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		case 5:
 			ball.Physics(P1, P2);
+
 			if (Goal1)
 			{
 				KillTimer(hWnd, 2);
@@ -271,7 +281,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				P2->ResetPos(2);
 				ball.Reset();
 				Goal1 = FALSE;
+				P1Power = FALSE;
+				P2Power = FALSE;
+				P1Crash = FALSE;
+				P2Crash = FALSE;
 			}
+
 			else if (Goal2)
 			{
 				KillTimer(hWnd, 2);
@@ -282,7 +297,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				P2->ResetPos(2);
 				ball.Reset();
 				Goal2 = FALSE;
+				P1Power = FALSE;
+				P2Power = FALSE;
+				P1Crash = FALSE;
+				P2Crash = FALSE;
 			}
+
 			break;
 
 		case 6:
@@ -490,6 +510,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				LOOP(hWnd, KeyBuffer);
 			}
 
+			if (P1Crash) {
+				P1->PowerShoot(memdc, 1, ball.BallxPos(), ball.BallyPos());
+			}
+
+			if (P2Crash) {
+				P2->PowerShoot(memdc, 2, ball.BallxPos(), ball.BallyPos());
+			}
+
 			P1->Draw(memdc, 1);
 			P2->Draw(memdc, 2);
 
@@ -570,6 +598,14 @@ void LOOP(HWND hWnd, BOOL KB[]) {
 		P2->Kick(2);
 		Kick2 = TRUE;
 		SetTimer(hWnd, 7, 1000, NULL);
+	}
+
+	if (KB['f'] || KB['F'] && P1->PowerGauge() == 100) {
+		P1Power = TRUE;
+	}
+
+	if (KB[VK_RETURN] && P2->PowerGauge() == 100) {
+		P2Power = TRUE;
 	}
 }
 

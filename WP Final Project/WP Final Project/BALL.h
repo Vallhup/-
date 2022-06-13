@@ -27,11 +27,10 @@ class Ball {
 public:
 	Ball();
 
+	double BallxPos() const;
 	double BallyPos() const;
 
 	void Draw(HDC hdc);
-	void Action(void);
-	void Check_Crash(HWND hWnd);
 	void Physics(Character* p1, Character* p2);
 	void Reset();
 	~Ball();

@@ -19,10 +19,12 @@ Israel::Israel(int playerNum) : Character()
 	switch (playerNum) {
 	case 1:
 		xPos = 100;
+		Power.Load(_T("sprite\\israelPower_L.png"));
 		break;
 
 	case 2:
 		xPos = 875;
+		Power.Load(_T("sprite\\israelPower_R.png"));
 		break;
 	}
 
@@ -149,6 +151,21 @@ void Israel::Jump(int dir)
 	}
 }
 
+void Israel::PowerShoot(HDC hdc, int playerNum, double xpos, double ypos)
+{
+	switch (playerNum) {
+	case 1:
+		Power.TransparentBlt(hdc, xpos - 200, ypos - 53, 260, 140, RGB(255, 0, 0));
+		break;
+
+	case 2:
+		Power.TransparentBlt(hdc, xpos - 30, ypos - 53, 260, 140, RGB(255, 0, 0));
+		break;
+	}
+
+	PwGauge = 0;
+}
+
 Israel::~Israel()
 {
 	Head[0].Destroy();
@@ -156,5 +173,6 @@ Israel::~Israel()
 	Body[0].Destroy();
 	Body[1].Destroy();
 	Body[2].Destroy();
+	Power.Destroy();
 	flag.Destroy();
 }

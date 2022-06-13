@@ -16,6 +16,8 @@ Canada::Canada(int playerNum) : Character()
 
 	flag.Load(_T("sprite\\flag_Canada.png"));
 
+	Power.Load(_T("sprite\\canadaPower.png"));
+
 	switch (playerNum) {
 	case 1:
 		xPos = 100;
@@ -149,6 +151,15 @@ void Canada::Jump(int dir)
 	}
 }
 
+void Canada::PowerShoot(HDC hdc, int playerNum, double xpos, double ypos)
+{
+	for (int i = 0; i < 5; ++i) {
+		Power.TransparentBlt(hdc, 100 + (i * 160), 150 + (80 * (i % 2)), 200, 200, RGB(255, 0, 42));
+	}
+
+	PwGauge = 0;
+}
+
 Canada::~Canada()
 {
 	Head[0].Destroy();
@@ -156,5 +167,6 @@ Canada::~Canada()
 	Body[0].Destroy();
 	Body[1].Destroy();
 	Body[2].Destroy();
+	Power.Destroy();
 	flag.Destroy();
 }

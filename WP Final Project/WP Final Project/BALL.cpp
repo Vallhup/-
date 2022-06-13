@@ -8,6 +8,9 @@ extern RECT WinSize;
 extern BOOL Kick1, Kick2;
 extern BOOL Goal1, Goal2;
 
+extern BOOL P1Power, P2Power;
+extern BOOL P1Crash, P2Crash;
+
 Ball::Ball()
 {
 	xPos = 500;
@@ -24,6 +27,11 @@ Ball::Ball()
 	srand((unsigned int)time(NULL));
 
 	SkinRnd = rand() % 3;
+}
+
+double Ball::BallxPos() const
+{
+	return xPos;
 }
 
 double Ball::BallyPos() const
@@ -78,7 +86,15 @@ void Ball::Physics(Character* p1, Character* p2)
 	{
 		if ((((xPos >= p1ext.left) && (xPos <= p1ext.right))) || (((xPos + (radius * 2) >= p1ext.left) && (xPos + (radius * 2) <= p1ext.right))))
 		{
-			yVel = -(yVel + HEADING);
+			if (P1Power) {
+				yVel -= GRAVITY;
+				xVel = POWERSHOOT;
+				P1Crash = TRUE;
+			}
+
+			else {
+				yVel = -(yVel + HEADING);
+			}
 		}
 	}
 	
@@ -86,7 +102,15 @@ void Ball::Physics(Character* p1, Character* p2)
 	{
 		if ((((xPos >= p2ext.left) && (xPos <= p2ext.right))) || (((xPos + (radius * 2) >= p2ext.left) && (xPos + (radius * 2) <= p2ext.right))))
 		{
-			yVel = -(yVel + HEADING);
+			if (P2Power) {
+				yVel -= GRAVITY;
+				xVel = -POWERSHOOT;
+				P2Crash = TRUE;
+			}
+
+			else {
+				yVel = -(yVel + HEADING);
+			}
 		}
 	}
 
@@ -94,11 +118,22 @@ void Ball::Physics(Character* p1, Character* p2)
 	{
 		if (xPos <= p1ext.right && xPos >= p1ext.left)
 		{
-			if (Kick1)
+			if (Kick1 && !P1Power)
 			{
 				yVel = -(yVel + HEADING);
+				
 			}
-			xVel = SHOOT;
+
+			if (P1Power) {
+				yVel -= GRAVITY;
+				xVel = POWERSHOOT;
+				P1Crash = TRUE;
+			}
+
+			else {
+				xVel = SHOOT;
+			}
+
 		}
 
 		else if (xPos + (radius * 2) >= p1ext.left && xPos + (radius * 2) <= p1ext.right)
@@ -116,11 +151,21 @@ void Ball::Physics(Character* p1, Character* p2)
 
 		else if (xPos + (radius * 2) >= p2ext.left && xPos + (radius * 2) <= p2ext.right)
 		{
-			if (Kick2)
+			if (Kick2 && !P2Power)
 			{
 				yVel = -(yVel + HEADING);
+
 			}
-			xVel = -SHOOT;
+
+			if (P2Power) {
+				yVel -= GRAVITY;
+				xVel = -POWERSHOOT;
+				P2Crash = TRUE;
+			}
+
+			else {
+				xVel = -SHOOT;
+			}
 		}
 	}
 

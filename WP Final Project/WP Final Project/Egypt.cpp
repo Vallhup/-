@@ -16,13 +16,17 @@ Egypt::Egypt(int playerNum) : Character()
 
 	flag.Load(_T("sprite\\flag_Egypt.png"));
 
+	Power[0].Load(_T("sprite\\egyptPower2.png"));
+
 	switch (playerNum) {
 	case 1:
 		xPos = 100;
+		Power[1].Load(_T("sprite\\egyptPower1_L.png"));
 		break;
 
 	case 2:
 		xPos = 875;
+		Power[1].Load(_T("sprite\\egyptPower1_R.png"));
 		break;
 	}
 
@@ -149,6 +153,23 @@ void Egypt::Jump(int dir)
 	}
 }
 
+void Egypt::PowerShoot(HDC hdc, int playerNum, double xpos, double ypos)
+{
+	switch (playerNum) {
+	case 1:
+		Power[0].TransparentBlt(hdc, xpos - 5, ypos - 10, 50, 50, RGB(255, 0, 0));
+		Power[1].TransparentBlt(hdc, xPos - 250, yPos - 150, 300, 200, RGB(255, 0, 0));
+		break;
+
+	case 2:
+		Power[0].TransparentBlt(hdc, xpos - 5, ypos - 10, 50, 50, RGB(255, 0, 0));
+		Power[1].TransparentBlt(hdc, xPos + 10, yPos - 150, 300, 200, RGB(255, 0, 0));
+		break;
+	}
+
+	PwGauge = 0;
+}
+
 Egypt::~Egypt()
 {
 	Head[0].Destroy();
@@ -156,5 +177,7 @@ Egypt::~Egypt()
 	Body[0].Destroy();
 	Body[1].Destroy();
 	Body[2].Destroy();
+	Power[0].Destroy();
+	Power[1].Destroy();
 	flag.Destroy();
 }

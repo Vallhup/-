@@ -3,6 +3,7 @@
 #define CHAR_SIZE 50
 #define HEADING 10
 #define SHOOT 10
+#define POWERSHOOT 20
 
 #include <atlimage.h>
 #include <Windows.h>
@@ -36,9 +37,10 @@ public:
 	RECT CharPos() const;
 	void PwGaugeFull();
 	int CharScore() const;
+	int PowerGauge() const;
 
 	virtual void UI_Print(HDC hdc, int playerNum) const = 0;
-
+	virtual void PowerShoot(HDC hdc, int playerNum, double xpos, double ypos) = 0;
 	virtual void Draw(HDC hdc, int playerNum) const = 0;
 	virtual void Move(int dir, int playerNum) = 0;
 	virtual void Jump(int dir) = 0;

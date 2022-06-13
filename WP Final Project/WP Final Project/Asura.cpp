@@ -19,10 +19,12 @@ Asura::Asura(int playerNum) : Character()
 	switch (playerNum) {
 	case 1:
 		xPos = 100;
+		Power.Load(_T("sprite\\asuraPower_L.png"));
 		break;
 
 	case 2:
 		xPos = 875;
+		Power.Load(_T("sprite\\asuraPower_R.png"));
 		break;
 	}
 
@@ -149,6 +151,21 @@ void Asura::Jump(int dir)
 	}
 }
 
+void Asura::PowerShoot(HDC hdc, int playerNum, double xpos, double ypos)
+{
+	switch (playerNum) {
+	case 1:
+		Power.TransparentBlt(hdc, xpos - 250, ypos - 80, 300, 200, RGB(255, 255, 255));
+		break;
+
+	case 2:
+		Power.TransparentBlt(hdc, xpos - 30, ypos - 80, 300, 200, RGB(255, 255, 255));
+		break;
+	}
+
+	PwGauge = 0;
+}
+
 Asura::~Asura()
 {
 	Head[0].Destroy();
@@ -156,5 +173,6 @@ Asura::~Asura()
 	Body[0].Destroy();
 	Body[1].Destroy();
 	Body[2].Destroy();
+	Power.Destroy();
 	flag.Destroy();
 }

@@ -16,13 +16,17 @@ Italy::Italy(int playerNum) : Character()
 
 	flag.Load(_T("sprite\\flag_Italy.png"));
 
+	Power[1].Load(_T("sprite\\Normal_Ball.png"));
+
 	switch (playerNum) {
 	case 1:
 		xPos = 100;
+		Power[0].Load(_T("sprite\\italyPower_L.png"));
 		break;
 
 	case 2:
 		xPos = 875;
+		Power[0].Load(_T("sprite\\italyPower_R.png"));
 		break;
 	}
 
@@ -149,6 +153,23 @@ void Italy::Jump(int dir)
 	}
 }
 
+void Italy::PowerShoot(HDC hdc, int playerNum, double xpos, double ypos)
+{
+	switch (playerNum) {
+	case 1:
+		Power[1].TransparentBlt(hdc, xpos - 20, ypos - 30, 60, 60, RGB(255, 0, 0));
+		Power[0].TransparentBlt(hdc, xpos - 60, ypos - 40, 70, 70, RGB(255, 0, 42));
+		break;
+
+	case 2:
+		Power[1].TransparentBlt(hdc, xpos - 10, ypos - 30, 60, 60, RGB(255, 0, 0));
+		Power[0].TransparentBlt(hdc, xpos + 10, ypos - 40, 70, 70, RGB(255, 0, 42));
+		break;
+	}
+
+	PwGauge = 0;
+}
+
 Italy::~Italy()
 {
 	Head[0].Destroy();
@@ -156,5 +177,7 @@ Italy::~Italy()
 	Body[0].Destroy();
 	Body[1].Destroy();
 	Body[2].Destroy();
+	Power[0].Destroy();
+	Power[1].Destroy();
 	flag.Destroy();
 }

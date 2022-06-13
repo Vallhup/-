@@ -19,10 +19,12 @@ Korea::Korea(int playerNum) : Character()
 	switch (playerNum) {
 	case 1:
 		xPos = 100;
+		Power.Load(_T("sprite\\koreaPower_L.png"));
 		break;
 
 	case 2:
 		xPos = 875;
+		Power.Load(_T("sprite\\koreaPower_R.png"));
 		break;
 	}
 
@@ -149,6 +151,21 @@ void Korea::Jump(int dir)
 	}
 }
 
+void Korea::PowerShoot(HDC hdc, int playerNum, double xpos, double ypos)
+{
+	switch (playerNum) {
+	case 1:
+		Power.TransparentBlt(hdc, xpos - 80, ypos - 20, 130, 70, RGB(255, 0, 0));
+		break;
+
+	case 2:
+		Power.TransparentBlt(hdc, xpos - 20, ypos - 20, 130, 70, RGB(255, 0, 0));
+		break;
+	}
+
+	PwGauge = 0;
+}
+
 Korea::~Korea()
 {
 	Head[0].Destroy();
@@ -156,5 +173,6 @@ Korea::~Korea()
 	Body[0].Destroy();
 	Body[1].Destroy();
 	Body[2].Destroy();
+	Power.Destroy();
 	flag.Destroy();
 }

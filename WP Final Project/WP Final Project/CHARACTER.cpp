@@ -69,6 +69,11 @@ void Character::ResetPos(int playerNum)
 	yPos = 630;
 }
 
+int Character::PowerGauge() const
+{
+	return PwGauge;
+}
+
 Character::~Character()
 {
 	PowerGaugeL.Destroy();
