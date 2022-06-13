@@ -1,6 +1,7 @@
 #pragma once
 
 #define CHAR_SIZE 50
+#define HEADING 10
 
 #include <atlimage.h>
 #include <Windows.h>
