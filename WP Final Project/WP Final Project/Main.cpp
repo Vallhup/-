@@ -78,11 +78,15 @@ BOOL CrashCheck = FALSE;
 RECT P1Rect, P2Rect;
 
 int P1Num, P2Num;
+BOOL Kick1, Kick2;
+BOOL Goal1, Goal2;
 
 BOOL Pause = FALSE;
 int SceneNum = 0;
 
-extern float v_0;
+CImage Char[2][10];
+CImage CharP1;
+CImage CharP2;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
@@ -107,7 +111,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	static RECT ButtonExit;
 
 	static POINT mouse;
-	static TCHAR str[100];
 
 	static RECT CharSelRect[10];
 
@@ -122,11 +125,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		P1Num = P2Num = 0;
 
-		StartBG.Load(_T("StartBG.png"));
-		CharSelectBG.Load(_T("CharSelectBG.png"));
-		BackGround.Load(_T("BackGround.png"));
-		GoalPostR.Load(_T("GoalPost - R.png"));
-		GoalPostL.Load(_T("GoalPost - L.png"));
+		StartBG.Load(_T("sprite\\StartBG.png"));
+		CharSelectBG.Load(_T("sprite\\CharSelectBG.png"));
+		BackGround.Load(_T("sprite\\BackGround.png"));
+		GoalPostR.Load(_T("sprite\\GoalPost - R.png"));
+		GoalPostL.Load(_T("sprite\\GoalPost - L.png"));
 
 		for (int i = 0; i < 2; ++i) {
 			for (int j = 0; j < 5; ++j) {
@@ -140,6 +143,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		Timer_S = 0;
 
 		JmpCnt1 = JmpCnt2 = 0;
+		Kick1 = Kick2 = Goal1 = Goal2 = FALSE;
 
 		break;
 
@@ -151,9 +155,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		case 'D': // 1p 快
 		case 'w':
 		case 'W':
+		case 's':
+		case 'S':
 		case VK_LEFT: // 2p 谅
 		case VK_RIGHT: // 2p 快
 		case VK_UP:
+		case VK_DOWN:
 			KeyBuffer[wParam] = TRUE;
 			break;
 
@@ -179,9 +186,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		case 'D': // 1p 快
 		case 'w':
 		case 'W':
+		case 's':
+		case 'S':
 		case VK_LEFT: // 2p 谅
 		case VK_RIGHT: // 2p 快
 		case VK_UP:
+		case VK_DOWN:
 			KeyBuffer[wParam] = FALSE;
 			break;
 		}
@@ -200,6 +210,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				else if (Timer_M == 0) {
 					if (--Timer_S == 0) {
 						KillTimer(hWnd, 1);
+						KillTimer(hWnd, 5);
 						SceneNum = 4;
 					}
 				}
@@ -248,13 +259,41 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			break;
 
 		case 5:
-			ball.Action();
-			ball.Check_Crash(hWnd);
-
-			if (v_0 == 0) {
-				KillTimer(hWnd, 5);
+			ball.Physics(P1, P2);
+			if (Goal1)
+			{
+				KillTimer(hWnd, 2);
+				KillTimer(hWnd, 3);
+				P1->Goaled();
+				P2->Goal();
+				P1->ResetPos(1);
+				P2->ResetPos(2);
+				ball.Reset();
+				Goal1 = FALSE;
 			}
+			else if (Goal2)
+			{
+				KillTimer(hWnd, 2);
+				KillTimer(hWnd, 3);
+				P1->Goal();
+				P2->Goaled();
+				P1->ResetPos(1);
+				P2->ResetPos(2);
+				ball.Reset();
+				Goal2 = FALSE;
+			}
+			break;
 
+		case 6:
+			P1->Kick(1);
+			Kick1 = FALSE;
+			KillTimer(hWnd, 6);
+			break;
+
+		case 7:
+			P2->Kick(2);
+			Kick2 = FALSE;
+			KillTimer(hWnd, 7);
 			break;
 		}
 
@@ -322,6 +361,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 			if (sqrt(pow(500 - mouse.x, 2) + pow(530 - mouse.y, 2)) <= 110) {
 				SceneNum = 3;
+				DeleteSelBG();
 				SetTimer(hWnd, 1, 1000, NULL);
 				SetTimer(hWnd, 4, 1000, NULL);
 				SetTimer(hWnd, 5, 10, NULL);
@@ -334,9 +374,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				SceneNum = 2;
 				Timer_M = 1;
 				Timer_S = 0;
+				ball.Reset();
+				DeleteResBG();
+				delete(P1);
+				delete(P2);
+				KillTimer(hWnd, 2);
+				KillTimer(hWnd, 3);
+				KillTimer(hWnd, 4);
+				KillTimer(hWnd, 5);
 			}
 
 			else if (sqrt(pow(500 - mouse.x, 2) + pow(570 - mouse.y, 2)) <= 100) {
+				DeleteResBG();
+				delete(P1);
+				delete(P2);
+				StartBG.Destroy();
+				CharSelectBG.Destroy();
+				BackGround.Destroy();
+				GoalPostR.Destroy();
+				GoalPostL.Destroy();
 				PostQuitMessage(0);
 			}
 
@@ -447,9 +503,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			break;
 		}
 
-		wsprintf(str, L"%d  %d", mouse.x, mouse.y);
-		TextOut(memdc, 0, 0, str, lstrlen(str));
-
 		BitBlt(hdc, 0, 0, 1000, 800, memdc, 0, 0, SRCCOPY);
 
 		EndPaint(hWnd, &ps);
@@ -457,6 +510,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_DESTROY:
+		DeleteResBG();
+		delete(P1);
+		delete(P2);
+		StartBG.Destroy();
+		CharSelectBG.Destroy();
+		BackGround.Destroy();
+		GoalPostR.Destroy();
+		GoalPostL.Destroy();
 		PostQuitMessage(0);
 		break;
 	}
@@ -492,6 +553,20 @@ void LOOP(HWND hWnd, BOOL KB[]) {
 	if (KB[VK_UP])
 	{
 		SetTimer(hWnd, 3, 25, NULL);
+	}
+
+	if (KB['s'] || KB['S'] && !Kick1)
+	{
+		P1->Kick(1);
+		Kick1 = TRUE;
+		SetTimer(hWnd, 6, 1000, NULL);
+	}
+
+	if (KB[VK_DOWN] && !Kick2)
+	{
+		P2->Kick(2);
+		Kick2 = TRUE;
+		SetTimer(hWnd, 7, 1000, NULL);
 	}
 }
 

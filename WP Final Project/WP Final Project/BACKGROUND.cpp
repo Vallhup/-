@@ -14,6 +14,9 @@ extern TCHAR Timer[10];
 
 extern int SceneNum;
 extern int P1Num, P2Num;
+extern CImage Char[2][10];
+extern 	CImage CharP1;
+extern CImage CharP2;
 
 void DrawBG(HDC hdc)
 {
@@ -63,8 +66,6 @@ void DrawBG(HDC hdc)
 
 void DrawSelectBG(HDC hdc, int P1Score, int P2Score)
 {
-	CImage Char[2][10];
-
 	Char[0][0].Load(_T("sprite\\Alien_L.png"));
 	Char[0][1].Load(_T("sprite\\Asura_L.png"));
 	Char[0][2].Load(_T("sprite\\Brazil_L.png"));
@@ -120,7 +121,7 @@ void DrawSelectBG(HDC hdc, int P1Score, int P2Score)
 	else if (SceneNum == 4) {
 		CImage ResultBG;
 
-		ResultBG.Load(_T("ResultBG.png"));
+		ResultBG.Load(_T("sprite\\ResultBG.png"));
 		ResultBG.StretchBlt(hdc, WinSize, SRCCOPY);
 
 		TCHAR result[2][10];
@@ -200,9 +201,6 @@ void DrawSelectBG(HDC hdc, int P1Score, int P2Score)
 
 void ResultBG(HDC hdc)
 {
-	CImage CharP1;
-	CImage CharP2;
-
 	switch (P1Num) {
 	case 0:
 		CharP1.Load(_T("sprite\\Alien_L.png"));
@@ -286,4 +284,21 @@ void ResultBG(HDC hdc)
 		CharP1.Load(_T("sprite\\Poland_L.png"));
 		break;
 	}
+}
+
+void DeleteSelBG()
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		for (int j = 0; j < 10; ++j)
+		{
+			Char[i][j].Destroy();
+		}
+	}
+}
+
+void DeleteResBG()
+{
+	CharP1.Destroy();
+	CharP2.Destroy();
 }

@@ -9,11 +9,11 @@ Character::Character()
 	yPos = 0;
 	PwGauge = 0;
 
-	PowerGaugeL.Load(_T("PowerGauge_L.png"));
-	PowerGaugeFrameL.Load(_T("PowerGaugeFrame_L.png"));
+	PowerGaugeL.Load(_T("sprite\\PowerGauge_L.png"));
+	PowerGaugeFrameL.Load(_T("sprite\\PowerGaugeFrame_L.png"));
 
-	PowerGaugeR.Load(_T("PowerGauge_R.png"));
-	PowerGaugeFrameR.Load(_T("PowerGaugeFrame_R.png"));
+	PowerGaugeR.Load(_T("sprite\\PowerGauge_R.png"));
+	PowerGaugeFrameR.Load(_T("sprite\\PowerGaugeFrame_R.png"));
 }
 
 RECT Character::CharPos() const
@@ -35,4 +35,45 @@ void Character::PwGaugeFull()
 	if (PwGauge >= 100) {
 		PwGauge = 100;
 	}
+}
+
+void Character::Kick(int playerNum)
+{
+	kick = playerNum - kick;
+}
+
+void Character::Goal()
+{
+	score++;
+}
+
+void Character::Goaled()
+{
+	PwGauge += 20;
+	if (PwGauge >= 100) {
+		PwGauge = 100;
+	}
+}
+
+void Character::ResetPos(int playerNum)
+{
+	switch (playerNum)
+	{
+	case 1:
+		xPos = 100;
+		break;
+
+	case 2:
+		xPos = 875;
+		break;
+	}
+	yPos = 630;
+}
+
+Character::~Character()
+{
+	PowerGaugeL.Destroy();
+	PowerGaugeR.Destroy();
+	PowerGaugeFrameL.Destroy();
+	PowerGaugeFrameR.Destroy();
 }

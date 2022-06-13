@@ -1,6 +1,8 @@
 #pragma once
 
 #define CHAR_SIZE 50
+#define HEADING 10
+#define SHOOT 10
 
 #include <atlimage.h>
 #include <Windows.h>
@@ -16,11 +18,14 @@ protected:
 
 	// 능력치
 	int jump;  // 5 ~ 6
-	int speed; // 8 ~ 10
+	int speed; // 5 ~ 7
 	int power; // 3 ~ 5
 
 	// 점수
 	int score = 0;
+
+	// Body 변경
+	int kick = 0;
 
 	CImage PowerGaugeL, PowerGaugeFrameL;
 	CImage PowerGaugeR, PowerGaugeFrameR;
@@ -37,5 +42,10 @@ public:
 	virtual void Draw(HDC hdc, int playerNum) const = 0;
 	virtual void Move(int dir, int playerNum) = 0;
 	virtual void Jump(int dir) = 0;
+	void Kick(int);
+	void Goal();
+	void Goaled();
+	void ResetPos(int);
+	~Character();
 };
 
